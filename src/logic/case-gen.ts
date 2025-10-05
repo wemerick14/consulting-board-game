@@ -15,7 +15,67 @@ import {
 export function generateHint(template: CaseTemplate): string {
   const howto = template.truth_howto;
 
-  // Quick math hints
+  // NEW Quick Math hints (2-step calculations)
+  if (howto.includes("customers × (buyPct/100) × price")) return "Customers times buy rate times price";
+  if (howto.includes("((price - cost - overhead) / price) × 100")) return "Calculate margin percentage from components";
+  if (howto.includes("((marketing + sales) × 1000 / customers)")) return "Total costs divided by customers";
+  if (howto.includes("((selling - buying) / buying) × 100")) return "Price difference divided by original";
+  if (howto.includes("(inventory / (sales / 365))")) return "Inventory divided by daily sales";
+  if (howto.includes("(fee + (miles × mileRate))")) return "Base fee plus mileage cost";
+  if (howto.includes("ads × ctr × conversion")) return "Ads times two conversion rates";
+  if (howto.includes("subs × (1 - churn) × monthly")) return "Subscribers times retention times price";
+  if (howto.includes("((price - cost) × sales) - fixed")) return "Unit profit times volume minus fixed";
+  if (howto.includes("(rent + salary) / revenue")) return "Fixed costs divided by revenue";
+  if (howto.includes("sales × (paymentPct/100) × feeRate")) return "Sales times payment percent times rate";
+  if (howto.includes("licenses × hours × rate")) return "Licenses times hours times rate";
+  if (howto.includes("investment × (1 + (annual/100) ** years)")) return "Compound growth over multiple years";
+  if (howto.includes("investment × ((1 + annual/100) ** years)")) return "Compound growth over multiple years";
+  if (howto.includes("((traffic - goal) / goal) × 100")) return "Difference divided by target percentage";
+  if (howto.includes("(revenue × marginPct) - salaries")) return "Gross profit minus fixed costs";
+  if (howto.includes("(sqft × psf / (units × pricePerUnit))")) return "Total rent divided by revenue";
+  if (howto.includes("((orders - lastOrders) / lastOrders) × 100")) return "Growth divided by baseline percentage";
+  if (howto.includes("(hours × wage) + bonus")) return "Hourly pay plus bonus amount";
+  if (howto.includes("units × cost × (1 + duttyPct/100)")) return "Base cost plus import duty";
+  if (howto.includes("units × cost × (1 + dutyPct/100)")) return "Base cost plus import duty";
+
+  // NEW Full Case hints (multi-step business problems)
+  if (howto.includes("setup / ((revenue - cost) × days)")) return "Startup cost divided by monthly profit";
+  if (howto.includes("(fixed / ((price - variable) × capacity))")) return "Fixed cost divided by contribution margin";
+  if (howto.includes("final = initial × (1 - (churnRate/100)) ** 12")) return "Apply monthly churn over year";
+  if (howto.includes("channel1ROI = (channel1Rev - channel1Cost) / channel1Cost")) return "Compare profit to cost ratios";
+  if (howto.includes("yearly = rent × 12")) return "Convert monthly to annual costs";
+  if (howto.includes("(current × (rate/100)) - planned")) return "Expected minus planned headcount difference";
+  if (howto.includes("totalCost = product + shipping + handling")) return "Sum all cost components first";
+  if (howto.includes("margin = ((price - cogs - labor) / price) × 100")) return "Revenue minus costs divided price";
+  if (howto.includes("(totalSeats × occupancy × price)")) return "Capacity times utilization times price";
+  if (howto.includes("(installs × free + installs × paid × price)")) return "Free plus paid user revenue";
+  if (howto.includes("((newPrice - cost) × newUnits) - ((price - cost) × units)")) return "Compare profit before and after";
+  if (howto.includes("avgOrder × freq × (retentionRate/100)")) return "Order value times frequency times retention";
+  if (howto.includes("((direct × directRate) + (marketplace × marketRate))")) return "Sum revenue from both channels";
+  if (howto.includes("(revenue × (targetMargin/100)) - (cogs + overhead)")) return "Target profit minus actual costs";
+  if (howto.includes("((current - projected) / current) × 100")) return "Reduction divided by current percentage";
+  if (howto.includes("(seats - (staff × seatsPerStaff))")) return "Total capacity minus required coverage";
+  if (howto.includes("(employees × bonus) + development")) return "Total bonus plus development budget";
+  if (howto.includes("(miles / mpg × fuel)")) return "Distance divided by efficiency times cost";
+  if (howto.includes("contract × years × (1 - (discount/100))")) return "Annual value times duration discounted";
+  if (howto.includes("(revenue - (cogs + marketing + salaries))")) return "Revenue minus all expense categories";
+
+  // NEW MCQ Strategy hints (conceptual guidance)
+  if (template.decision.type === "mcq") {
+    if (template.category === "market_entry") return "Focus on risk and differentiation";
+    if (template.category === "pricing_strategy") return "Consider customer psychology and perception";
+    if (template.category === "profitability") return "Identify highest leverage profit drivers";
+    if (template.category === "competitive_response") return "Anticipate competitor reactions and sustainability";
+    if (template.category === "growth_strategy") return "Balance growth speed with efficiency";
+    if (template.category === "customer_retention") return "Prioritize retention over new acquisition";
+    if (template.category === "product_launch") return "Validate market need before building";
+    if (template.category === "cost_reduction") return "Cut costs without harming revenue";
+    if (template.category === "expansion") return "Assess market attractiveness and capability";
+    if (template.category === "partnership") return "Evaluate strategic fit and value";
+    return "Think strategically about tradeoffs";
+  }
+
+  // Old Quick math hints (legacy support)
   if (howto.includes("cups × price")) return "Multiply cups by unit price";
   if (howto.includes("revenue - costs")) return "Subtract total costs from revenue";
   if (howto.includes("original × (1 - discount/100)")) return "Apply discount to original price";
@@ -37,7 +97,7 @@ export function generateHint(template: CaseTemplate): string {
   if (howto.includes("perHour × hours")) return "Multiply per hour by hours";
   if (howto.includes("rent / sqft")) return "Divide rent by square footage";
 
-  // Market sizing hints
+  // Market sizing hints (legacy support)
   if (howto.includes("population × 1000 × (agePct/100) × (enrollPct/100)")) return "Population times two percentage rates";
   if (howto.includes("students × 1000 × freq")) return "Students multiplied by purchase frequency";
   if (howto.includes("population × 1e6 × (adultPct/100) × (memberPct/100)")) return "Population times two percentage rates";
@@ -54,7 +114,7 @@ export function generateHint(template: CaseTemplate): string {
   if (howto.includes("population × 1000 × (goerPct/100) × freq")) return "Population times percentage times frequency";
   if (howto.includes("households × 1000 × (interestPct/100) × (subPct/100)")) return "Households times two percentage rates";
 
-  // Full case hints
+  // Old Full case hints (legacy support)
   if (howto.includes("setupCost / monthlyProfit")) return "Divide setup by monthly profit";
   if (howto.includes("Math.max(price1 × units1, price2 × units2)")) return "Compare two revenue calculation results";
   if (howto.includes("currentCost × (reductionPct/100) × 12")) return "Annual savings from cost reduction";
@@ -204,6 +264,177 @@ export function generateCase(template: CaseTemplate, seed: number): PromptInstan
       else if (formula.includes("rent / sqft")) {
         result = (context.rent as number) / (context.sqft as number);
       }
+
+      // NEW 2-step Quick Math formulas
+      // Coffee revenue 2-step
+      else if (formula.includes("customers × (buyPct/100) × price")) {
+        result = (context.customers as number) * ((context.buyPct as number) / 100) * (context.price as number);
+      }
+      // Profit margin percentage
+      else if (formula.includes("((price - cost - overhead) / price) × 100")) {
+        result = (((context.price as number) - (context.cost as number) - (context.overhead as number)) / (context.price as number)) * 100;
+      }
+      // Customer acquisition cost
+      else if (formula.includes("((marketing + sales) × 1000 / customers)")) {
+        result = (((context.marketing as number) + (context.sales as number)) * 1000 / (context.customers as number));
+      }
+      // ROI percentage
+      else if (formula.includes("((selling - buying) / buying) × 100")) {
+        result = (((context.selling as number) - (context.buying as number)) / (context.buying as number)) * 100;
+      }
+      // Inventory turnover days
+      else if (formula.includes("(inventory / (sales / 365))")) {
+        result = ((context.inventory as number) / ((context.sales as number) / 365));
+      }
+      // Ride cost
+      else if (formula.includes("(fee + (miles × mileRate))")) {
+        result = ((context.fee as number) + ((context.miles as number) * (context.mileRate as number)));
+      }
+      // Ad conversions
+      else if (formula.includes("ads × ctr × conversion")) {
+        result = (context.ads as number) * (context.ctr as number) * (context.conversion as number);
+      }
+      // Subscription MRR
+      else if (formula.includes("subs × (1 - churn) × monthly")) {
+        result = (context.subs as number) * (1 - (context.churn as number)) * (context.monthly as number);
+      }
+      // Total profit
+      else if (formula.includes("((price - cost) × sales) - fixed")) {
+        result = (((context.price as number) - (context.cost as number)) * (context.sales as number)) - (context.fixed as number);
+      }
+      // Overhead ratio
+      else if (formula.includes("(rent + salary) / revenue")) {
+        result = ((context.rent as number) + (context.salary as number)) / (context.revenue as number);
+      }
+      // Payment processing fees
+      else if (formula.includes("sales × (paymentPct/100) × feeRate")) {
+        result = (context.sales as number) * ((context.paymentPct as number) / 100) * (context.feeRate as number);
+      }
+      // Billable revenue
+      else if (formula.includes("licenses × hours × rate")) {
+        result = (context.licenses as number) * (context.hours as number) * (context.rate as number);
+      }
+      // Compound interest (with parentheses variation)
+      else if (formula.includes("investment × ((1 + annual/100) ** years)")) {
+        result = (context.investment as number) * (Math.pow(1 + (context.annual as number) / 100, context.years as number));
+      }
+      else if (formula.includes("investment × (1 + (annual/100) ** years)")) {
+        result = (context.investment as number) * (Math.pow(1 + (context.annual as number) / 100, context.years as number));
+      }
+      // Traffic variance
+      else if (formula.includes("((traffic - goal) / goal) × 100")) {
+        result = (((context.traffic as number) - (context.goal as number)) / (context.goal as number)) * 100;
+      }
+      // Contribution margin
+      else if (formula.includes("(revenue × marginPct) - salaries")) {
+        result = ((context.revenue as number) * (context.marginPct as number)) - (context.salaries as number);
+      }
+      // Rent as percentage of revenue
+      else if (formula.includes("(sqft × psf / (units × pricePerUnit))")) {
+        result = ((context.sqft as number) * (context.psf as number) / ((context.units as number) * (context.pricePerUnit as number)));
+      }
+      // Month-over-month growth
+      else if (formula.includes("((orders - lastOrders) / lastOrders) × 100")) {
+        result = (((context.orders as number) - (context.lastOrders as number)) / (context.lastOrders as number)) * 100;
+      }
+      // Total compensation
+      else if (formula.includes("(hours × wage) + bonus")) {
+        result = ((context.hours as number) * (context.wage as number)) + (context.bonus as number);
+      }
+      // Import cost with duty (typo variant)
+      else if (formula.includes("units × cost × (1 + duttyPct/100)")) {
+        result = (context.units as number) * (context.cost as number) * (1 + (context.duttyPct as number) / 100);
+      }
+      else if (formula.includes("units × cost × (1 + dutyPct/100)")) {
+        result = (context.units as number) * (context.cost as number) * (1 + (context.dutyPct as number) / 100);
+      }
+
+      // NEW Full Case formulas (multi-step)
+      // Food truck breakeven
+      else if (formula.includes("setup / ((revenue - cost) × days)")) {
+        result = (context.setup as number) / (((context.revenue as number) - (context.cost as number)) * (context.days as number));
+      }
+      // Coffee shop breakeven
+      else if (formula.includes("(fixed / ((price - variable) × capacity))")) {
+        result = ((context.fixed as number) / (((context.price as number) - (context.variable as number)) * (context.capacity as number)));
+      }
+      // Subscription churn modeling
+      else if (formula.includes("final = initial × (1 - (churnRate/100)) ** 12")) {
+        result = (context.initial as number) * Math.pow(1 - ((context.churnRate as number) / 100), 12);
+      }
+      // Marketing channel ROI comparison
+      else if (formula.includes("channel1ROI = (channel1Rev - channel1Cost) / channel1Cost")) {
+        const channel1ROI = ((context.channel1Rev as number) - (context.channel1Cost as number)) / (context.channel1Cost as number);
+        const channel2ROI = ((context.channel2Rev as number) - (context.channel2Cost as number)) / (context.channel2Cost as number);
+        result = Math.max(channel1ROI, channel2ROI);
+      }
+      // Gym membership revenue
+      else if (formula.includes("yearly = rent × 12")) {
+        const yearly = (context.rent as number) * 12;
+        result = ((context.members as number) * (context.monthly as number) * 12) - yearly;
+      }
+      // Hiring plan
+      else if (formula.includes("(current × (rate/100)) - planned")) {
+        result = ((context.current as number) * ((context.rate as number) / 100)) - (context.planned as number);
+      }
+      // E-commerce total cost
+      else if (formula.includes("totalCost = product + shipping + handling")) {
+        const totalCost = (context.product as number) + (context.shipping as number) + (context.handling as number);
+        result = totalCost * (1 + (context.taxRate as number) / 100);
+      }
+      // Restaurant margin
+      else if (formula.includes("margin = ((price - cogs - labor) / price) × 100")) {
+        result = (((context.price as number) - (context.cogs as number) - (context.labor as number)) / (context.price as number)) * 100;
+      }
+      // Event revenue
+      else if (formula.includes("(totalSeats × occupancy × price)")) {
+        result = (context.totalSeats as number) * (context.occupancy as number) * (context.price as number);
+      }
+      // Freemium app revenue
+      else if (formula.includes("(installs × free + installs × paid × price)")) {
+        result = ((context.installs as number) * (context.free as number) + (context.installs as number) * (context.paid as number) * (context.price as number));
+      }
+      // Dynamic pricing impact
+      else if (formula.includes("((newPrice - cost) × newUnits) - ((price - cost) × units)")) {
+        result = (((context.newPrice as number) - (context.cost as number)) * (context.newUnits as number)) - (((context.price as number) - (context.cost as number)) * (context.units as number));
+      }
+      // Customer lifetime value
+      else if (formula.includes("avgOrder × freq × (retentionRate/100)")) {
+        result = (context.avgOrder as number) * (context.freq as number) * ((context.retentionRate as number) / 100);
+      }
+      // Omnichannel revenue
+      else if (formula.includes("((direct × directRate) + (marketplace × marketRate))")) {
+        result = ((context.direct as number) * (context.directRate as number)) + ((context.marketplace as number) * (context.marketRate as number));
+      }
+      // Margin gap analysis
+      else if (formula.includes("(revenue × (targetMargin/100)) - (cogs + overhead)")) {
+        result = ((context.revenue as number) * ((context.targetMargin as number) / 100)) - ((context.cogs as number) + (context.overhead as number));
+      }
+      // Workforce reduction
+      else if (formula.includes("((current - projected) / current) × 100")) {
+        result = (((context.current as number) - (context.projected as number)) / (context.current as number)) * 100;
+      }
+      // Restaurant capacity
+      else if (formula.includes("(seats - (staff × seatsPerStaff))")) {
+        result = ((context.seats as number) - ((context.staff as number) * (context.seatsPerStaff as number)));
+      }
+      // HR budget
+      else if (formula.includes("(employees × bonus) + development")) {
+        result = ((context.employees as number) * (context.bonus as number)) + (context.development as number);
+      }
+      // Fleet fuel cost
+      else if (formula.includes("(miles / mpg × fuel)")) {
+        result = ((context.miles as number) / (context.mpg as number) * (context.fuel as number));
+      }
+      // Contract value
+      else if (formula.includes("contract × years × (1 - (discount/100))")) {
+        result = (context.contract as number) * (context.years as number) * (1 - ((context.discount as number) / 100));
+      }
+      // Startup burn rate
+      else if (formula.includes("(revenue - (cogs + marketing + salaries))")) {
+        result = ((context.revenue as number) - ((context.cogs as number) + (context.marketing as number) + (context.salaries as number)));
+      }
+
       // Market sizing: students
       else if (formula.includes("population × 1000 × (agePct/100) × (enrollPct/100)")) {
         result = (context.population as number) * 1000 * ((context.agePct as number) / 100) * ((context.enrollPct as number) / 100);
