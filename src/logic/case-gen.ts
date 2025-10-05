@@ -265,174 +265,195 @@ export function generateCase(template: CaseTemplate, seed: number): PromptInstan
         result = (context.rent as number) / (context.sqft as number);
       }
 
-      // NEW 2-step Quick Math formulas
-      // Coffee revenue 2-step
-      else if (formula.includes("customers × (buyPct/100) × price")) {
+      // NEW Quick Math formulas (match exact patterns from database)
+      // QM 1: Coffee revenue
+      else if (formula.includes("revenue = customers × (buyPct/100) × price")) {
         result = (context.customers as number) * ((context.buyPct as number) / 100) * (context.price as number);
       }
-      // Profit margin percentage
-      else if (formula.includes("((price - cost - overhead) / price) × 100")) {
+      // QM 2: Profit margin
+      else if (formula.includes("margin = ((price - cost - overhead) / price) × 100")) {
         result = (((context.price as number) - (context.cost as number) - (context.overhead as number)) / (context.price as number)) * 100;
       }
-      // Customer acquisition cost
-      else if (formula.includes("((marketing + sales) × 1000 / customers)")) {
-        result = (((context.marketing as number) + (context.sales as number)) * 1000 / (context.customers as number));
+      // QM 3: Growth rate
+      else if (formula.includes("growthPct = ((thisYear - lastYear) / lastYear) × 100")) {
+        result = (((context.thisYear as number) - (context.lastYear as number)) / (context.lastYear as number)) * 100;
       }
-      // ROI percentage
-      else if (formula.includes("((selling - buying) / buying) × 100")) {
-        result = (((context.selling as number) - (context.buying as number)) / (context.buying as number)) * 100;
+      // QM 4: Average price
+      else if (formula.includes("avgPrice = (item1Units × item1Price + item2Units × item2Price) / (item1Units + item2Units)")) {
+        result = ((context.item1Units as number) * (context.item1Price as number) + (context.item2Units as number) * (context.item2Price as number)) / ((context.item1Units as number) + (context.item2Units as number));
       }
-      // Inventory turnover days
-      else if (formula.includes("(inventory / (sales / 365))")) {
-        result = ((context.inventory as number) / ((context.sales as number) / 365));
+      // QM 5: CAC
+      else if (formula.includes("cac = (marketing + sales) × 1000 / customers")) {
+        result = ((context.marketing as number) + (context.sales as number)) * 1000 / (context.customers as number);
       }
-      // Ride cost
-      else if (formula.includes("(fee + (miles × mileRate))")) {
-        result = ((context.fee as number) + ((context.miles as number) * (context.mileRate as number)));
+      // QM 6: Lost revenue from churn
+      else if (formula.includes("lostRevenue = customers × monthly × (churnPct/100)")) {
+        result = (context.customers as number) * (context.monthly as number) * ((context.churnPct as number) / 100);
       }
-      // Ad conversions
-      else if (formula.includes("ads × ctr × conversion")) {
-        result = (context.ads as number) * (context.ctr as number) * (context.conversion as number);
+      // QM 7: Days on hand
+      else if (formula.includes("daysOnHand = (inventory / cogs) × 365")) {
+        result = ((context.inventory as number) / (context.cogs as number)) * 365;
       }
-      // Subscription MRR
-      else if (formula.includes("subs × (1 - churn) × monthly")) {
-        result = (context.subs as number) * (1 - (context.churn as number)) * (context.monthly as number);
+      // QM 8: New revenue
+      else if (formula.includes("newRevenue = newPrice × newVolume")) {
+        result = (context.newPrice as number) * (context.newVolume as number);
       }
-      // Total profit
-      else if (formula.includes("((price - cost) × sales) - fixed")) {
-        result = (((context.price as number) - (context.cost as number)) * (context.sales as number)) - (context.fixed as number);
+      // QM 9: Total cost
+      else if (formula.includes("totalCost = fixed + (variable × units) / 1000")) {
+        result = (context.fixed as number) + ((context.variable as number) * (context.units as number)) / 1000;
       }
-      // Overhead ratio
-      else if (formula.includes("(rent + salary) / revenue")) {
-        result = ((context.rent as number) + (context.salary as number)) / (context.revenue as number);
+      // QM 10: Net profit
+      else if (formula.includes("netProfit = (monthly × months) - upfront")) {
+        result = ((context.monthly as number) * (context.months as number)) - (context.upfront as number);
       }
-      // Payment processing fees
-      else if (formula.includes("sales × (paymentPct/100) × feeRate")) {
-        result = (context.sales as number) * ((context.paymentPct as number) / 100) * (context.feeRate as number);
+      // QM 11: Contribution margin
+      else if (formula.includes("contribution = price - materials - labor")) {
+        result = (context.price as number) - (context.materials as number) - (context.labor as number);
       }
-      // Billable revenue
-      else if (formula.includes("licenses × hours × rate")) {
-        result = (context.licenses as number) * (context.hours as number) * (context.rate as number);
+      // QM 12: Conversion funnel
+      else if (formula.includes("customers = visitors × (leadPct/100) × (customerPct/100)")) {
+        result = (context.visitors as number) * ((context.leadPct as number) / 100) * ((context.customerPct as number) / 100);
       }
-      // Compound interest (with parentheses variation)
-      else if (formula.includes("investment × ((1 + annual/100) ** years)")) {
-        result = (context.investment as number) * (Math.pow(1 + (context.annual as number) / 100, context.years as number));
+      // QM 13: Market share
+      else if (formula.includes("marketShare = (revenue / market) × 100")) {
+        result = ((context.revenue as number) / (context.market as number)) * 100;
       }
-      else if (formula.includes("investment × (1 + (annual/100) ** years)")) {
-        result = (context.investment as number) * (Math.pow(1 + (context.annual as number) / 100, context.years as number));
+      // QM 14: Revenue per employee
+      else if (formula.includes("revenuePerEmp = (revenue × 1000) / employees")) {
+        result = ((context.revenue as number) * 1000) / (context.employees as number);
       }
-      // Traffic variance
-      else if (formula.includes("((traffic - goal) / goal) × 100")) {
-        result = (((context.traffic as number) - (context.goal as number)) / (context.goal as number)) * 100;
+      // QM 15: Break even units
+      else if (formula.includes("breakEvenUnits = (fixed × 1000) / (price - variable)")) {
+        result = ((context.fixed as number) * 1000) / ((context.price as number) - (context.variable as number));
       }
-      // Contribution margin
-      else if (formula.includes("(revenue × marginPct) - salaries")) {
-        result = ((context.revenue as number) * (context.marginPct as number)) - (context.salaries as number);
+      // QM 16: Lost revenue from discount
+      else if (formula.includes("lostRevenue = original × volume × (discount/100)")) {
+        result = (context.original as number) * (context.volume as number) * ((context.discount as number) / 100);
       }
-      // Rent as percentage of revenue
-      else if (formula.includes("(sqft × psf / (units × pricePerUnit))")) {
-        result = ((context.sqft as number) * (context.psf as number) / ((context.units as number) * (context.pricePerUnit as number)));
+      // QM 17: Utilization rate
+      else if (formula.includes("utilization = (currentUnits / maxUnits) × 100")) {
+        result = ((context.currentUnits as number) / (context.maxUnits as number)) * 100;
       }
-      // Month-over-month growth
-      else if (formula.includes("((orders - lastOrders) / lastOrders) × 100")) {
-        result = (((context.orders as number) - (context.lastOrders as number)) / (context.lastOrders as number)) * 100;
+      // QM 18: Minimum price
+      else if (formula.includes("minPrice = variable + (fixed × 1000 / units)")) {
+        result = (context.variable as number) + ((context.fixed as number) * 1000 / (context.units as number));
       }
-      // Total compensation
-      else if (formula.includes("(hours × wage) + bonus")) {
-        result = ((context.hours as number) * (context.wage as number)) + (context.bonus as number);
+      // QM 19: Scaled profit
+      else if (formula.includes("newProfit = oldRev × (1 + revGrowth/100) × (1 - varPct/100) - fixed")) {
+        result = (context.oldRev as number) * (1 + (context.revGrowth as number) / 100) * (1 - (context.varPct as number) / 100) - (context.fixed as number);
       }
-      // Import cost with duty (typo variant)
-      else if (formula.includes("units × cost × (1 + duttyPct/100)")) {
-        result = (context.units as number) * (context.cost as number) * (1 + (context.duttyPct as number) / 100);
-      }
-      else if (formula.includes("units × cost × (1 + dutyPct/100)")) {
-        result = (context.units as number) * (context.cost as number) * (1 + (context.dutyPct as number) / 100);
+      // QM 20: NPS score
+      else if (formula.includes("nps = ((promoters - detractors) / total) × 100")) {
+        result = (((context.promoters as number) - (context.detractors as number)) / (context.total as number)) * 100;
       }
 
-      // NEW Full Case formulas (multi-step)
-      // Food truck breakeven
-      else if (formula.includes("setup / ((revenue - cost) × days)")) {
-        result = (context.setup as number) / (((context.revenue as number) - (context.cost as number)) * (context.days as number));
+      // NEW Full Case formulas (match exact patterns from database)
+      // FC 1: Food truck breakeven
+      else if (formula.includes("monthsToBreakEven = (startup × 1000) / ((dailyRev - dailyCost) × daysPerMonth)")) {
+        result = ((context.startup as number) * 1000) / (((context.dailyRev as number) - (context.dailyCost as number)) * (context.daysPerMonth as number));
       }
-      // Coffee shop breakeven
-      else if (formula.includes("(fixed / ((price - variable) × capacity))")) {
-        result = ((context.fixed as number) / (((context.price as number) - (context.variable as number)) * (context.capacity as number)));
+      // FC 2: Customer LTV
+      else if (formula.includes("ltv = (monthly - serveCost) × months")) {
+        result = ((context.monthly as number) - (context.serveCost as number)) * (context.months as number);
       }
-      // Subscription churn modeling
-      else if (formula.includes("final = initial × (1 - (churnRate/100)) ** 12")) {
-        result = (context.initial as number) * Math.pow(1 - ((context.churnRate as number) / 100), 12);
+      // FC 3: TAM calculation
+      else if (formula.includes("tam = (population × 1000 × (targetPct/100) × (purchasePct/100) × avgPurchase) / 1000000")) {
+        result = ((context.population as number) * 1000 * ((context.targetPct as number) / 100) * ((context.purchasePct as number) / 100) * (context.avgPurchase as number)) / 1000000;
       }
-      // Marketing channel ROI comparison
-      else if (formula.includes("channel1ROI = (channel1Rev - channel1Cost) / channel1Cost")) {
-        const channel1ROI = ((context.channel1Rev as number) - (context.channel1Cost as number)) / (context.channel1Cost as number);
-        const channel2ROI = ((context.channel2Rev as number) - (context.channel2Cost as number)) / (context.channel2Cost as number);
-        result = Math.max(channel1ROI, channel2ROI);
+      // FC 4: Subscription churn
+      else if (formula.includes("month12Subs = startingSubs + (newSubs × 12) - (startingSubs × (churnPct/100) × 12); month12Rev = month12Subs × monthly")) {
+        const month12Subs = (context.startingSubs as number) + ((context.newSubs as number) * 12) - ((context.startingSubs as number) * ((context.churnPct as number) / 100) * 12);
+        result = month12Subs * (context.monthly as number);
       }
-      // Gym membership revenue
-      else if (formula.includes("yearly = rent × 12")) {
-        const yearly = (context.rent as number) * 12;
-        result = ((context.members as number) * (context.monthly as number) * 12) - yearly;
+      // FC 5: Product profitability
+      else if (formula.includes("profitA = (priceA - costA) × volumeA; profitB = (priceB - costB) × volumeB; maxProfit = Math.max(profitA, profitB)")) {
+        const profitA = ((context.priceA as number) - (context.costA as number)) * (context.volumeA as number);
+        const profitB = ((context.priceB as number) - (context.costB as number)) * (context.volumeB as number);
+        result = Math.max(profitA, profitB);
       }
-      // Hiring plan
-      else if (formula.includes("(current × (rate/100)) - planned")) {
-        result = ((context.current as number) * ((context.rate as number) / 100)) - (context.planned as number);
+      // FC 6: Cost reduction NPV
+      else if (formula.includes("netBenefit = ((savings - maintenance) × years) - upfront")) {
+        result = (((context.savings as number) - (context.maintenance as number)) * (context.years as number)) - (context.upfront as number);
       }
-      // E-commerce total cost
-      else if (formula.includes("totalCost = product + shipping + handling")) {
-        const totalCost = (context.product as number) + (context.shipping as number) + (context.handling as number);
-        result = totalCost * (1 + (context.taxRate as number) / 100);
+      // FC 7: Marketing channel ROI
+      else if (formula.includes("roiA = ((customersA × ltvA) - (costA × 1000)) / (costA × 1000) × 100; roiB = ((customersB × ltvB) - (costB × 1000)) / (costB × 1000) × 100; maxROI = Math.max(roiA, roiB)")) {
+        const roiA = (((context.customersA as number) * (context.ltvA as number)) - ((context.costA as number) * 1000)) / ((context.costA as number) * 1000) * 100;
+        const roiB = (((context.customersB as number) * (context.ltvB as number)) - ((context.costB as number) * 1000)) / ((context.costB as number) * 1000) * 100;
+        result = Math.max(roiA, roiB);
       }
-      // Restaurant margin
-      else if (formula.includes("margin = ((price - cogs - labor) / price) × 100")) {
-        result = (((context.price as number) - (context.cogs as number) - (context.labor as number)) / (context.price as number)) * 100;
+      // FC 8: Product mix profit
+      else if (formula.includes("totalProfit = ((unitsA × marginA) + (unitsB × marginB)) / 1000 - fixed")) {
+        result = (((context.unitsA as number) * (context.marginA as number)) + ((context.unitsB as number) * (context.marginB as number))) / 1000 - (context.fixed as number);
       }
-      // Event revenue
-      else if (formula.includes("(totalSeats × occupancy × price)")) {
-        result = (context.totalSeats as number) * (context.occupancy as number) * (context.price as number);
+      // FC 9: Cohort retention
+      else if (formula.includes("earlyRevenue = customers × monthly × 6 × (retentionEarly/100); lateRevenue = customers × monthly × 6 × (retentionLate/100); totalRevenue = earlyRevenue + lateRevenue")) {
+        const earlyRevenue = (context.customers as number) * (context.monthly as number) * 6 * ((context.retentionEarly as number) / 100);
+        const lateRevenue = (context.customers as number) * (context.monthly as number) * 6 * ((context.retentionLate as number) / 100);
+        result = earlyRevenue + lateRevenue;
       }
-      // Freemium app revenue
-      else if (formula.includes("(installs × free + installs × paid × price)")) {
-        result = ((context.installs as number) * (context.free as number) + (context.installs as number) * (context.paid as number) * (context.price as number));
+      // FC 10: Capacity planning
+      else if (formula.includes("currentDemand = currentCap × (utilizationPct/100); monthsTo100 = Math.log(currentCap / currentDemand) / Math.log(1 + growthPct/100)")) {
+        const currentDemand = (context.currentCap as number) * ((context.utilizationPct as number) / 100);
+        result = Math.log((context.currentCap as number) / currentDemand) / Math.log(1 + (context.growthPct as number) / 100);
       }
-      // Dynamic pricing impact
-      else if (formula.includes("((newPrice - cost) × newUnits) - ((price - cost) × units)")) {
-        result = (((context.newPrice as number) - (context.cost as number)) * (context.newUnits as number)) - (((context.price as number) - (context.cost as number)) * (context.units as number));
+      // FC 11: Pricing experiment
+      else if (formula.includes("baseProfit = (basePrice - cost) × baseVolume; newPrice = basePrice × (1 - discountPct/100); newVolume = baseVolume × (1 + volumeBoost/100); newProfit = (newPrice - cost) × newVolume; profitChange = newProfit - baseProfit")) {
+        const baseProfit = ((context.basePrice as number) - (context.cost as number)) * (context.baseVolume as number);
+        const newPrice = (context.basePrice as number) * (1 - (context.discountPct as number) / 100);
+        const newVolume = (context.baseVolume as number) * (1 + (context.volumeBoost as number) / 100);
+        const newProfit = (newPrice - (context.cost as number)) * newVolume;
+        result = newProfit - baseProfit;
       }
-      // Customer lifetime value
-      else if (formula.includes("avgOrder × freq × (retentionRate/100)")) {
-        result = (context.avgOrder as number) * (context.freq as number) * ((context.retentionRate as number) / 100);
+      // FC 12: Sales headcount
+      else if (formula.includes("additionalRevenue = currentRevenue × 12 × (revBoost/100); additionalCost = newHires × salary; netImpact = additionalRevenue - additionalCost")) {
+        const additionalRevenue = (context.currentRevenue as number) * 12 * ((context.revBoost as number) / 100);
+        const additionalCost = (context.newHires as number) * (context.salary as number);
+        result = additionalRevenue - additionalCost;
       }
-      // Omnichannel revenue
-      else if (formula.includes("((direct × directRate) + (marketplace × marketRate))")) {
-        result = ((context.direct as number) * (context.directRate as number)) + ((context.marketplace as number) * (context.marketRate as number));
+      // FC 13: Market penetration
+      else if (formula.includes("year2Customers = (tam × 1000000 / arpc) × (year2Pct/100); year2Revenue = (year2Customers × arpc) / 1000000")) {
+        const year2Customers = ((context.tam as number) * 1000000 / (context.arpc as number)) * ((context.year2Pct as number) / 100);
+        result = (year2Customers * (context.arpc as number)) / 1000000;
       }
-      // Margin gap analysis
-      else if (formula.includes("(revenue × (targetMargin/100)) - (cogs + overhead)")) {
-        result = ((context.revenue as number) * ((context.targetMargin as number) / 100)) - ((context.cogs as number) + (context.overhead as number));
+      // FC 14: Cannibalization
+      else if (formula.includes("cannibalized = newRev × (cannibalPct/100); netIncrease = newRev - cannibalized")) {
+        const cannibalized = (context.newRev as number) * ((context.cannibalPct as number) / 100);
+        result = (context.newRev as number) - cannibalized;
       }
-      // Workforce reduction
-      else if (formula.includes("((current - projected) / current) × 100")) {
-        result = (((context.current as number) - (context.projected as number)) / (context.current as number)) * 100;
+      // FC 15: Freemium model
+      else if (formula.includes("paidUsers = freeUsers × (conversionPct/100); revenue = paidUsers × paid; costs = freeUsers × freeCost; netRevenue = revenue - costs")) {
+        const paidUsers = (context.freeUsers as number) * ((context.conversionPct as number) / 100);
+        const revenue = paidUsers * (context.paid as number);
+        const costs = (context.freeUsers as number) * (context.freeCost as number);
+        result = revenue - costs;
       }
-      // Restaurant capacity
-      else if (formula.includes("(seats - (staff × seatsPerStaff))")) {
-        result = ((context.seats as number) - ((context.staff as number) * (context.seatsPerStaff as number)));
+      // FC 16: Procurement savings
+      else if (formula.includes("savings = annualSpend × 1000 × (savingsPct/100); netBenefit = savings - impCost")) {
+        const savings = (context.annualSpend as number) * 1000 * ((context.savingsPct as number) / 100);
+        result = savings - (context.impCost as number);
       }
-      // HR budget
-      else if (formula.includes("(employees × bonus) + development")) {
-        result = ((context.employees as number) * (context.bonus as number)) + (context.development as number);
+      // FC 17: A/B test winner
+      else if (formula.includes("revenueA = visitorsA × (conversionA/100) × aovA; revenueB = visitorsB × (conversionB/100) × aovB; maxRevenue = Math.max(revenueA, revenueB)")) {
+        const revenueA = (context.visitorsA as number) * ((context.conversionA as number) / 100) * (context.aovA as number);
+        const revenueB = (context.visitorsB as number) * ((context.conversionB as number) / 100) * (context.aovB as number);
+        result = Math.max(revenueA, revenueB);
       }
-      // Fleet fuel cost
-      else if (formula.includes("(miles / mpg × fuel)")) {
-        result = ((context.miles as number) / (context.mpg as number) * (context.fuel as number));
+      // FC 18: Referral program
+      else if (formula.includes("referrals = customers × (referralRate/100); newCustomers = referrals × (conversionPct/100); value = newCustomers × ltv; cost = referrals × reward; netValue = value - cost")) {
+        const referrals = (context.customers as number) * ((context.referralRate as number) / 100);
+        const newCustomers = referrals * ((context.conversionPct as number) / 100);
+        const value = newCustomers * (context.ltv as number);
+        const cost = referrals * (context.reward as number);
+        result = value - cost;
       }
-      // Contract value
-      else if (formula.includes("contract × years × (1 - (discount/100))")) {
-        result = (context.contract as number) * (context.years as number) * (1 - ((context.discount as number) / 100));
+      // FC 19: Inventory optimization
+      else if (formula.includes("savings = inventory × (holdingPct/100) × (reductionPct/100)")) {
+        result = (context.inventory as number) * ((context.holdingPct as number) / 100) * ((context.reductionPct as number) / 100);
       }
-      // Startup burn rate
-      else if (formula.includes("(revenue - (cogs + marketing + salaries))")) {
-        result = ((context.revenue as number) - ((context.cogs as number) + (context.marketing as number) + (context.salaries as number)));
+      // FC 20: Upsell revenue
+      else if (formula.includes("upgrades = customers × (upsellPct/100); increase = upgrades × (premium - base)")) {
+        const upgrades = (context.customers as number) * ((context.upsellPct as number) / 100);
+        result = upgrades * ((context.premium as number) - (context.base as number));
       }
 
       // Market sizing: students
