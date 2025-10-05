@@ -8,6 +8,24 @@ interface Props {
   onContinue: () => void;
 }
 
+// Career milestones
+const CAREER_MILESTONES = [
+  { position: 0, rank: "Analyst", emoji: "👔" },
+  { position: 2, rank: "Sr Analyst", emoji: "📊" },
+  { position: 8, rank: "Associate", emoji: "💼" },
+  { position: 14, rank: "Manager", emoji: "📈" },
+  { position: 16, rank: "Director", emoji: "🎯" },
+  { position: 18, rank: "Partner", emoji: "🏆" }
+];
+
+function getNextMilestone(position: number) {
+  return CAREER_MILESTONES.find(m => m.position > position) || CAREER_MILESTONES[CAREER_MILESTONES.length - 1];
+}
+
+function getProgressPercentage(position: number): number {
+  return Math.min((position / 18) * 100, 100);
+}
+
 export function ResultsScreen({
   players,
   currentPlayerName,
@@ -50,49 +68,99 @@ export function ResultsScreen({
           <h3 className="text-xl font-bold text-gray-700 mb-4 text-center">
             📊 Current Standings
           </h3>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {sortedPlayers.map((player, index) => {
               const isCurrentPlayer = player.name === currentPlayerName;
               const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : "";
+              const nextMilestone = getNextMilestone(player.position);
+              const progressPct = getProgressPercentage(player.position);
+              const positionsToRetirement = 18 - player.position;
+              const positionsToNextMilestone = nextMilestone.position - player.position;
 
               return (
                 <div
                   key={player.id}
                   className={`
-                    flex items-center justify-between p-4 rounded-lg transition-all
+                    p-4 rounded-lg transition-all
                     ${isCurrentPlayer
                       ? "bg-gradient-to-r from-blue-100 to-purple-100 border-2 border-blue-400 shadow-md"
                       : "bg-gray-50 border border-gray-200"
                     }
                   `}
                 >
-                  <div className="flex items-center gap-3 flex-1">
-                    <div className="text-2xl w-8">
-                      {medal || `${index + 1}.`}
+                  {/* Player Info Row */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="text-2xl w-8">
+                        {medal || `${index + 1}.`}
+                      </div>
+                      <div className="flex-1">
+                        <div className={`font-bold ${isCurrentPlayer ? "text-blue-700" : "text-gray-800"}`}>
+                          {player.name}
+                          {isCurrentPlayer && " (You)"}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {player.rank}
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <div className={`font-bold ${isCurrentPlayer ? "text-blue-700" : "text-gray-800"}`}>
-                        {player.name}
-                        {isCurrentPlayer && " (You)"}
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-gray-800">
+                        {player.points}
                       </div>
-                      <div className="text-sm text-gray-600">
-                        {player.rank}
+                      <div className="text-xs text-gray-500">points</div>
+                    </div>
+                    <div className="ml-4 text-right">
+                      <div className="text-xl font-bold text-blue-600">
+                        Pos {player.position}
                       </div>
+                      {player.streak > 0 && (
+                        <div className="text-xs text-orange-600">
+                          🔥 {player.streak} streak
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-gray-800">
-                      {player.points}
+
+                  {/* Career Progress Bar */}
+                  <div className="mt-3 space-y-2">
+                    <div className="flex justify-between text-xs text-gray-600">
+                      <span>👔 Analyst</span>
+                      <span className="font-semibold">
+                        {player.position >= 18 ? "🏆 Retired!" : `${positionsToRetirement} to retirement`}
+                      </span>
+                      <span>🏆 Partner</span>
                     </div>
-                    <div className="text-xs text-gray-500">points</div>
-                  </div>
-                  <div className="ml-4 text-right">
-                    <div className="text-xl font-bold text-blue-600">
-                      Pos {player.position}
+                    {/* Progress bar */}
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-blue-500 to-purple-600 h-full rounded-full transition-all duration-500"
+                        style={{ width: `${progressPct}%` }}
+                      />
                     </div>
-                    {player.streak > 0 && (
-                      <div className="text-xs text-orange-600">
-                        🔥 {player.streak} streak
+                    {/* Milestones */}
+                    <div className="flex justify-between text-xs">
+                      {CAREER_MILESTONES.map((milestone) => (
+                        <div
+                          key={milestone.position}
+                          className={`text-center ${
+                            player.position >= milestone.position
+                              ? "text-green-600 font-bold"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          <div>{milestone.emoji}</div>
+                          <div className="text-[10px]">
+                            {milestone.rank.split(" ").map((word, i) => (
+                              <div key={i}>{word}</div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {player.position < 18 && (
+                      <div className="text-center text-xs text-gray-600 mt-1">
+                        Next: {nextMilestone.emoji} <strong>{nextMilestone.rank}</strong> in {positionsToNextMilestone} {positionsToNextMilestone === 1 ? "position" : "positions"}
                       </div>
                     )}
                   </div>

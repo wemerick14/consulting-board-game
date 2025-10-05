@@ -1,13 +1,60 @@
+import { useState } from "react";
 import type { Player } from "../types";
 
 interface ScorebarProps {
   players: Player[];
   currentTurnIndex: number;
+  onResetGame?: () => void;
 }
 
-export function Scorebar({ players, currentTurnIndex }: ScorebarProps) {
+export function Scorebar({ players, currentTurnIndex, onResetGame }: ScorebarProps) {
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+
   return (
     <div className="w-full max-w-6xl mx-auto mb-6">
+      {/* Reset Confirmation Modal */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full">
+            <h3 className="text-xl font-bold text-gray-800 mb-3">
+              Reset Game?
+            </h3>
+            <p className="text-gray-600 mb-6">
+              This will clear all progress and return to setup. Are you sure?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowResetConfirm(false)}
+                className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowResetConfirm(false);
+                  onResetGame?.();
+                }}
+                className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
+              >
+                Reset Game
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reset Button */}
+      {onResetGame && (
+        <div className="flex justify-end mb-3">
+          <button
+            onClick={() => setShowResetConfirm(true)}
+            className="px-4 py-2 text-sm bg-red-100 hover:bg-red-200 text-red-700 border border-red-300 rounded-lg transition-colors font-medium"
+          >
+            🔄 Reset Game
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {players.map((player, idx) => (
           <div

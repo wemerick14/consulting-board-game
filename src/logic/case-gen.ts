@@ -10,6 +10,62 @@ import {
 } from "./compute";
 
 /**
+ * Generate a 5-word hint based on the case template
+ */
+export function generateHint(template: CaseTemplate): string {
+  const howto = template.truth_howto;
+
+  // Quick math hints
+  if (howto.includes("cups × price")) return "Multiply cups by unit price";
+  if (howto.includes("revenue - costs")) return "Subtract total costs from revenue";
+  if (howto.includes("original × (1 - discount/100)")) return "Apply discount to original price";
+  if (howto.includes("totalCost / units")) return "Divide total by unit count";
+  if (howto.includes("price - cost") && !howto.includes("new_price")) return "Subtract cost from selling price";
+  if (howto.includes("fixed / profit")) return "Divide fixed costs by margin";
+  if (howto.includes("rent + utilities + salaries")) return "Add all monthly expense items";
+  if (howto.includes("monthly × 12")) return "Multiply monthly by twelve months";
+  if (howto.includes("current × (1 + increase/100)")) return "Apply percentage increase to price";
+  if (howto.includes("hours × wage")) return "Multiply hours by hourly rate";
+  if (howto.includes("subtotal × (1 + taxRate/100)")) return "Add tax to purchase subtotal";
+  if (howto.includes("bill × (tipPct/100)")) return "Calculate percentage of total bill";
+  if (howto.includes("total / people")) return "Divide total by number people";
+  if (howto.includes("cost × (1 + markup/100)")) return "Apply markup to unit cost";
+  if (howto.includes("totalSales / transactions")) return "Divide sales by transaction count";
+  if (howto.includes("units × unitCost")) return "Multiply units by unit cost";
+  if (howto.includes("thisYear - lastYear")) return "Subtract last year from current";
+  if (howto.includes("(buyers / visitors) × 100")) return "Divide buyers by total visitors";
+  if (howto.includes("perHour × hours")) return "Multiply per hour by hours";
+  if (howto.includes("rent / sqft")) return "Divide rent by square footage";
+
+  // Market sizing hints
+  if (howto.includes("population × 1000 × (agePct/100) × (enrollPct/100)")) return "Population times two percentage rates";
+  if (howto.includes("students × 1000 × freq")) return "Students multiplied by purchase frequency";
+  if (howto.includes("population × 1e6 × (adultPct/100) × (memberPct/100)")) return "Population times two percentage rates";
+  if (howto.includes("population × 1000 × (attendPct/100) × freq") && template.id.includes("concert")) return "Population times attendance times frequency";
+  if (howto.includes("students × 1000 × books")) return "Students multiplied by items each";
+  if (howto.includes("(population × 1000 / peoplePerHH) × (subPct/100)")) return "Households times subscription penetration rate";
+  if (howto.includes("population × 1000 × (drinkerPct/100) × spend")) return "Population times percentage times spend";
+  if (howto.includes("(population × 1e6 × (ownPct/100)) / years")) return "Total owners divided by years";
+  if (howto.includes("population × 1000 × (dineOutPct/100) × freq")) return "Population times percentage times frequency";
+  if (howto.includes("households × 1000 × (dogPct/100) × spend")) return "Households times percentage times spend";
+  if (howto.includes("population × 1000 × freq") && !howto.includes("attendPct")) return "Population multiplied by annual frequency";
+  if (howto.includes("population × 1000 × (adultPct/100) × (userPct/100) × freq")) return "Population times three percentage factors";
+  if (howto.includes("members × 1000 × (attendPct/100) × freq")) return "Members times attendance times frequency";
+  if (howto.includes("population × 1000 × (goerPct/100) × freq")) return "Population times percentage times frequency";
+  if (howto.includes("households × 1000 × (interestPct/100) × (subPct/100)")) return "Households times two percentage rates";
+
+  // Full case hints
+  if (howto.includes("setupCost / monthlyProfit")) return "Divide setup by monthly profit";
+  if (howto.includes("Math.max(price1 × units1, price2 × units2)")) return "Compare two revenue calculation results";
+  if (howto.includes("currentCost × (reductionPct/100) × 12")) return "Annual savings from cost reduction";
+  if (howto.includes("(currentUnits / maxUnits) × 100")) return "Current divided by maximum capacity";
+  if (howto.includes("revenue / adSpend")) return "Return equals revenue over spend";
+
+  // Default fallback
+  return "Break down into smaller steps";
+}
+
+/**
  * Generate a case instance from a template using seeded randomness
  */
 export function generateCase(template: CaseTemplate, seed: number): PromptInstance {
