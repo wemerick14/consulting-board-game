@@ -1,4 +1,4 @@
-import { CaseTemplate } from "../types";
+import type { CaseTemplate } from "../types";
 
 export const caseDatabase: CaseTemplate[] = [
   // ========== MARKET SIZING CASES ==========

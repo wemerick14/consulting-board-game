@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Player, GameSettings } from "../types";
+import type { Player, GameSettings } from "../types";
 
 interface SetupScreenProps {
   onStart: (players: Player[], settings: GameSettings) => void;

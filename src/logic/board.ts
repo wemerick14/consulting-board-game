@@ -1,4 +1,4 @@
-import { Tile } from "../types";
+import type { Tile } from "../types";
 
 /**
  * Create the game board with 18 spaces and 2 risk routes

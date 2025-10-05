@@ -1,4 +1,4 @@
-import { Tile, Player } from "../types";
+import type { Tile, Player } from "../types";
 
 interface BoardProps {
   board: Tile[];

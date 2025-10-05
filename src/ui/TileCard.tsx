@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PromptInstance } from "../types";
+import type { PromptInstance } from "../types";
 
 interface TileCardProps {
   prompt: PromptInstance;

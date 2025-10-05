@@ -1,4 +1,4 @@
-import { TruthResult } from "../types";
+import type { TruthResult } from "../types";
 
 /**
  * Market Sizing: Iced Coffee

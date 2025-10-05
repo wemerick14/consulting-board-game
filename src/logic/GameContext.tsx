@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useReducer, useEffect, ReactNode } from "react";
-import { GameState, GameAction, Player } from "../types";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
+import type { ReactNode } from "react";
+import type { GameState, GameAction } from "../types";
 import { createBoard, getRankFromPosition } from "./board";
 import { generateCase } from "./case-gen";
 import { caseDatabase } from "../cases/caseDatabase";
-import { gradeNumeric, gradeMcq, isSevereMiss } from "./grading";
+import { gradeNumeric, gradeMcq } from "./grading";
 
 const initialState: GameState = {
   players: [],
@@ -47,11 +48,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case "SUBMIT_ANSWER": {
       if (!state.activePrompt) return state;
 
-      const currentPlayer = state.players[state.turnIndex];
       const prompt = state.activePrompt;
-
       let earnedPoints = 0;
-      let severeMiss = false;
 
       if (prompt.decision.type === "numeric" && 'final' in prompt.truth) {
         const template = caseDatabase.find(t => t.id === prompt.templateId);
@@ -59,11 +57,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           action.answer as number,
           prompt.truth.final,
           template?.scoring?.tolerance_bands
-        );
-        severeMiss = isSevereMiss(
-          action.answer as number,
-          prompt.truth.final,
-          template?.severe_miss_rule
         );
       } else if (prompt.decision.type === "mcq" && 'correctIndex' in prompt.truth) {
         earnedPoints = gradeMcq(action.answer as number, prompt.decision.points || [4, 3, 2, 0]);

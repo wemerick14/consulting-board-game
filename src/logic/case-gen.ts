@@ -1,4 +1,4 @@
-import { CaseTemplate, PromptInstance } from "../types";
+import type { CaseTemplate, PromptInstance } from "../types";
 import { seededRand, randInt, randFloat, randChoice } from "./random";
 import {
   computeMarketSizing,
@@ -62,82 +62,84 @@ export function generateCase(template: CaseTemplate, seed: number): PromptInstan
       case "ms-ev-charging-v1":
       case "ms-streaming-subs-v1":
         truth = computeMarketSizing({
-          population: numbers.population || numbers.pop,
-          penPct: (numbers.penPct || numbers.fanPct || numbers.evPen) / 100,
-          freq: numbers.freq || numbers.sess,
-          season: numbers.season || ((numbers.devicePct || 80) / 100) * ((numbers.publicShare || numbers.wtpPct || 50) / 100)
+          population: (numbers.population || numbers.pop) as number,
+          penPct: ((numbers.penPct || numbers.fanPct || numbers.evPen) as number) / 100,
+          freq: (numbers.freq || numbers.sess) as number,
+          season: (numbers.season || (((numbers.devicePct || 80) as number) / 100) * (((numbers.publicShare || numbers.wtpPct || 50) as number) / 100)) as number
         });
         break;
 
       case "profit-retail-bridge-v1":
         truth = computeProfitRetail({
-          traffic: numbers.traffic * 1000, // Convert to actual count
-          convRate: numbers.convRate / 100,
-          aov: numbers.aov,
-          cogsPct: numbers.cogsPct / 100,
-          fixedCosts: numbers.fixedCosts * 1e6, // Convert to dollars
-          trafficChg: numbers.trafficChgPct / 100,
-          convChg: numbers.convChgPp / 100,
-          aovChg: numbers.aovChgPct / 100,
-          cogsChg: numbers.cogsChgPp / 100,
-          fixChg: numbers.fixChgPct / 100
+          traffic: (numbers.traffic as number) * 1000, // Convert to actual count
+          convRate: (numbers.convRate as number) / 100,
+          aov: numbers.aov as number,
+          cogsPct: (numbers.cogsPct as number) / 100,
+          fixedCosts: (numbers.fixedCosts as number) * 1e6, // Convert to dollars
+          trafficChg: (numbers.trafficChgPct as number) / 100,
+          convChg: (numbers.convChgPp as number) / 100,
+          aovChg: (numbers.aovChgPct as number) / 100,
+          cogsChg: (numbers.cogsChgPp as number) / 100,
+          fixChg: (numbers.fixChgPct as number) / 100
         });
         // Convert back to millions
-        truth = { ...truth, final: truth.final / 1e6 };
+        if ('final' in truth) {
+          truth = { ...truth, final: truth.final / 1e6 };
+        }
         break;
 
       case "profit-pharmacy-kiosk-v1":
         truth = computePharmacyKiosk({
-          scripts: numbers.scripts,
-          price: numbers.price,
-          gmPct: numbers.gmPct / 100,
-          staff: numbers.staff * 1000,
-          rent: numbers.rent * 1000,
-          shrinkPct: numbers.shrinkPct / 100,
-          capex: numbers.capex * 1000
+          scripts: numbers.scripts as number,
+          price: numbers.price as number,
+          gmPct: (numbers.gmPct as number) / 100,
+          staff: (numbers.staff as number) * 1000,
+          rent: (numbers.rent as number) * 1000,
+          shrinkPct: (numbers.shrinkPct as number) / 100,
+          capex: (numbers.capex as number) * 1000
         });
         break;
 
       case "profit-saas-unit-econ-v1":
         {
-          const ltv = numbers.acv * (numbers.gmPct / 100) * numbers.lifetime;
-          const ratio = ltv / numbers.cac;
+          const ltv = (numbers.acv as number) * ((numbers.gmPct as number) / 100) * (numbers.lifetime as number);
+          const ratio = ltv / (numbers.cac as number);
           truth = { final: Math.round(ratio * 100) / 100 };
         }
         break;
 
       case "pricing-oilgas-v1":
         truth = computePricingElasticity({
-          priceChange: numbers.priceChange,
-          elasticity: numbers.elasticity,
-          baseVol: numbers.baseVol * 1e6,
-          margin: numbers.margin
+          priceChange: numbers.priceChange as number,
+          elasticity: numbers.elasticity as number,
+          baseVol: (numbers.baseVol as number) * 1e6,
+          margin: numbers.margin as number
         });
         break;
 
       case "pe-dairy-v1":
         truth = computePEscreen({
-          yieldPerCow: numbers.yieldPerCow,
-          herd: numbers.herd,
-          price: numbers.price,
-          varCost: numbers.varCost,
-          fixedCosts: numbers.fixedCosts * 1000,
-          ev: numbers.ev * 1e6,
-          targetMult: numbers.targetMult
+          yieldPerCow: numbers.yieldPerCow as number,
+          herd: numbers.herd as number,
+          price: numbers.price as number,
+          varCost: numbers.varCost as number,
+          fixedCosts: (numbers.fixedCosts as number) * 1000,
+          ev: (numbers.ev as number) * 1e6,
+          targetMult: numbers.targetMult as number
         });
         break;
 
       case "entry-waterpark-v1":
         truth = computeWaterParkNPV({
-          tam: numbers.tam,
-          r1: numbers.r1,
-          r2: numbers.r2,
-          r3: numbers.r3,
-          ticket: numbers.ticket,
-          varCost: numbers.varCost,
-          fixedCosts: numbers.fixedCosts,
-          capex: numbers.capex,
-          disc: numbers.disc
+          tam: numbers.tam as number,
+          r1: numbers.r1 as number,
+          r2: numbers.r2 as number,
+          r3: numbers.r3 as number,
+          ticket: numbers.ticket as number,
+          varCost: numbers.varCost as number,
+          fixedCosts: numbers.fixedCosts as number,
+          capex: numbers.capex as number,
+          disc: numbers.disc as number
         });
         break;
 
