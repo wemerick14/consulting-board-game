@@ -7,8 +7,11 @@ import { Timer } from "./ui/Timer";
 import { TileCard } from "./ui/TileCard";
 import { PassScreen } from "./ui/PassScreen";
 import { SummaryModal } from "./ui/SummaryModal";
+import { ChoiceScreen } from "./components/ChoiceScreen";
+import { ResultsScreen } from "./components/ResultsScreen";
 import { gradeNumeric, gradeMcq, isSevereMiss } from "./logic/grading";
 import { caseDatabase } from "./cases/caseDatabase";
+import type { Difficulty } from "./types";
 
 function App() {
   const { state, dispatch } = useGame();
@@ -90,6 +93,18 @@ function App() {
     );
   }
 
+  // Handle choice phase - player chooses difficulty
+  if (state.phase === "choice") {
+    return (
+      <ChoiceScreen
+        playerName={currentPlayer.name}
+        onChooseDifficulty={(difficulty: Difficulty) => {
+          dispatch({ type: "CHOOSE_DIFFICULTY", difficulty });
+        }}
+      />
+    );
+  }
+
   // Handle prompt phase
   if (state.phase === "prompt" && state.activePrompt) {
     return (
@@ -150,7 +165,7 @@ function App() {
     );
   }
 
-  // Handle grading phase - show results briefly then transition
+  // Handle grading phase - show results briefly then apply grading
   if (state.phase === "grading" && lastGradingResult) {
     setTimeout(() => {
       dispatch({
@@ -184,6 +199,21 @@ function App() {
           )}
         </div>
       </div>
+    );
+  }
+
+  // Handle results phase - show leaderboard
+  if (state.phase === "results" && state.lastGradingResult) {
+    return (
+      <ResultsScreen
+        players={state.players}
+        currentPlayerName={currentPlayer.name}
+        earnedPoints={state.lastGradingResult.points}
+        isSevereMiss={state.lastGradingResult.severeMiss}
+        onContinue={() => {
+          dispatch({ type: "SHOW_RESULTS" });
+        }}
+      />
     );
   }
 

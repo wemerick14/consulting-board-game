@@ -1,383 +1,746 @@
 import type { CaseTemplate } from "../types";
 
 export const caseDatabase: CaseTemplate[] = [
-  // ========== MARKET SIZING CASES ==========
+  // ========== QUICK MATH (20 questions, 30-45 seconds) ==========
+
+  // Basic Revenue
   {
-    id: "ms-icedcoffee-tx-v1",
+    id: "qm-revenue-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Coffee Shop Revenue",
+    stem_template: "A coffee shop sells {cups} cups of coffee per day at ${price} each. What's the daily revenue?",
+    inputs: ["cups", "price"],
+    params: {
+      cups: { min: 100, max: 400, step: 50 },
+      price: { min: 3, max: 6, step: 0.5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "revenue = cups × price",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-profit-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Simple Profit Calculation",
+    stem_template: "A store has revenue of ${revenue}, and total costs of ${costs}. What's the profit?",
+    inputs: ["revenue", "costs"],
+    params: {
+      revenue: { min: 5000, max: 20000, step: 1000 },
+      costs: { min: 3000, max: 15000, step: 1000 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "profit = revenue - costs",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-percentage-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Discount Calculation",
+    stem_template: "A laptop costs ${original}. There's a {discount}% discount. What's the final price?",
+    inputs: ["original", "discount"],
+    params: {
+      original: { min: 600, max: 1500, step: 100 },
+      discount: { min: 10, max: 30, step: 5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "final = original × (1 - discount/100)",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-unit-cost-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Cost Per Unit",
+    stem_template: "A company produces {units} units with total cost of ${totalCost}. What's the cost per unit?",
+    inputs: ["units", "totalCost"],
+    params: {
+      units: { min: 100, max: 1000, step: 100 },
+      totalCost: { min: 5000, max: 50000, step: 5000 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "cost_per_unit = totalCost / units",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-margin-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Profit Margin",
+    stem_template: "A product sells for ${price} and costs ${cost} to make. What's the profit per unit?",
+    inputs: ["price", "cost"],
+    params: {
+      price: { min: 20, max: 100, step: 10 },
+      cost: { min: 10, max: 70, step: 5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "profit = price - cost",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-breakeven-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Break-Even Units",
+    stem_template: "Fixed costs are ${fixed}. Profit per unit is ${profit}. How many units to break even?",
+    inputs: ["fixed", "profit"],
+    params: {
+      fixed: { min: 10000, max: 50000, step: 5000 },
+      profit: { min: 10, max: 50, step: 5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "units = fixed / profit",
+    time_limit_s: 35,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-total-cost-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Total Monthly Cost",
+    stem_template: "Rent is ${rent}/month. Utilities are ${utilities}/month. Salaries are ${salaries}/month. What's the total monthly cost?",
+    inputs: ["rent", "utilities", "salaries"],
+    params: {
+      rent: { min: 2000, max: 8000, step: 1000 },
+      utilities: { min: 300, max: 1000, step: 100 },
+      salaries: { min: 5000, max: 20000, step: 2500 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "total = rent + utilities + salaries",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-annual-revenue-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Annual Revenue",
+    stem_template: "Monthly revenue is ${monthly}. What's the annual revenue?",
+    inputs: ["monthly"],
+    params: {
+      monthly: { min: 5000, max: 25000, step: 2500 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "annual = monthly × 12",
+    time_limit_s: 25,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-price-increase-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Price After Increase",
+    stem_template: "Current price is ${current}. Price increases by {increase}%. What's the new price?",
+    inputs: ["current", "increase"],
+    params: {
+      current: { min: 50, max: 200, step: 25 },
+      increase: { min: 5, max: 20, step: 5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "new_price = current × (1 + increase/100)",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-hourly-wage-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Weekly Earnings",
+    stem_template: "You work {hours} hours per week at ${wage} per hour. What are your weekly earnings?",
+    inputs: ["hours", "wage"],
+    params: {
+      hours: { min: 10, max: 40, step: 5 },
+      wage: { min: 15, max: 30, step: 2.5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "earnings = hours × wage",
+    time_limit_s: 25,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  // ========== MARKET SIZING (15 questions, 60 seconds) ==========
+
+  {
+    id: "ms-college-students-1",
     category: "market_sizing",
-    title: "Iced Coffee in Texas",
-    stem_template: "Estimate annual iced coffees sold in Texas. Population: {population}M, Penetration: {penPct}%, Frequency: {freq} cups/week per drinker, Seasonality factor: {season}. What is the total annual market size?",
-    inputs: ["population", "penPct", "freq", "season"],
+    difficulty: "full",
+    title: "College Students Estimate",
+    stem_template: "Estimate students at a university. Total population in city: {population}k. College age (18-24): {agePct}%. Enrollment rate: {enrollPct}%. How many students?",
+    inputs: ["population", "agePct", "enrollPct"],
     params: {
-      population: { min: 25, max: 32, step: 1 },
-      penPct: { min: 30, max: 55, step: 5 },
-      freq: { min: 2, max: 5, step: 1 },
-      season: { min: 0.9, max: 1.1, step: 0.05 }
+      population: { min: 100, max: 500, step: 50 },
+      agePct: { min: 8, max: 15, step: 1 },
+      enrollPct: { min: 40, max: 70, step: 5 }
     },
     decision: { type: "numeric" },
-    truth_howto: "Units = population × 1e6 × (penPct/100) × freq × 52 × season",
+    truth_howto: "students = population × 1000 × (agePct/100) × (enrollPct/100)",
     time_limit_s: 60,
+    max_points: 4,
     scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
   },
 
   {
-    id: "ms-ev-charging-v1",
+    id: "ms-pizza-orders-1",
     category: "market_sizing",
-    title: "EV Charging Sessions in City",
-    stem_template: "Estimate annual public EV charging sessions in Austin. Households: {hh}k, EV Penetration: {evPen}%, Sessions/week per EV: {sess}, Public share: {publicShare}%. Calculate total annual sessions.",
-    inputs: ["hh", "evPen", "sess", "publicShare"],
+    difficulty: "full",
+    title: "Weekly Pizza Orders",
+    stem_template: "Estimate weekly pizza orders in a college town. Students: {students}k. Order frequency: {freq} times/week per student. What's the weekly order count?",
+    inputs: ["students", "freq"],
     params: {
-      hh: { min: 350, max: 450, step: 10 },
-      evPen: { min: 8, max: 18, step: 2 },
-      sess: { min: 2, max: 4, step: 1 },
-      publicShare: { min: 40, max: 70, step: 5 }
+      students: { min: 15, max: 50, step: 5 },
+      freq: { min: 0.5, max: 2, step: 0.5 }
     },
     decision: { type: "numeric" },
-    truth_howto: "EVs = hh × 1000 × (evPen/100); sessions = EVs × sess × 52 × (publicShare/100)",
-    time_limit_s: 75,
+    truth_howto: "orders = students × 1000 × freq",
+    time_limit_s: 45,
+    max_points: 3,
     scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
   },
 
   {
-    id: "ms-streaming-subs-v1",
+    id: "ms-gym-memberships-1",
     category: "market_sizing",
-    title: "Streaming Subscribers TAM",
-    stem_template: "Estimate paid subscribers for a new sports streaming add-on in the US. Population: {pop}M, Sports fans: {fanPct}%, Device availability: {devicePct}%, Willingness to pay: {wtpPct}%. What's the addressable market?",
-    inputs: ["pop", "fanPct", "devicePct", "wtpPct"],
+    difficulty: "full",
+    title: "Gym Memberships in State",
+    stem_template: "State population: {population}M. Adults (18-65): {adultPct}%. Gym membership rate: {memberPct}%. How many gym members?",
+    inputs: ["population", "adultPct", "memberPct"],
     params: {
-      pop: { min: 320, max: 340, step: 5 },
-      fanPct: { min: 35, max: 55, step: 5 },
-      devicePct: { min: 75, max: 92, step: 3 },
-      wtpPct: { min: 15, max: 35, step: 5 }
+      population: { min: 5, max: 20, step: 5 },
+      adultPct: { min: 55, max: 70, step: 5 },
+      memberPct: { min: 15, max: 30, step: 5 }
     },
     decision: { type: "numeric" },
-    truth_howto: "TAM = pop × 1e6 × (fanPct/100) × (devicePct/100) × (wtpPct/100)",
+    truth_howto: "members = population × 1e6 × (adultPct/100) × (memberPct/100)",
     time_limit_s: 60,
-    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
-  },
-
-  // ========== PROFITABILITY CASES ==========
-  {
-    id: "profit-retail-bridge-v1",
-    category: "profitability",
-    title: "Retail Chain EBITDA Bridge",
-    stem_template: "A fashion retailer saw EBITDA decline YoY. Last year: Traffic {traffic}k, Conversion {convRate}%, AOV ${aov}, COGS {cogsPct}% of revenue, Fixed costs ${fixedCosts}M. This year: Traffic {trafficChgPct}%, Conversion {convChgPp}pp, AOV {aovChgPct}%, COGS {cogsChgPp}pp, Fixed {fixChgPct}%. What is this year's EBITDA ($M)?",
-    inputs: ["traffic", "convRate", "aov", "cogsPct", "fixedCosts", "trafficChgPct", "convChgPp", "aovChgPct", "cogsChgPp", "fixChgPct"],
-    params: {
-      traffic: { min: 400, max: 900, step: 50 },
-      convRate: { min: 8, max: 16, step: 1 },
-      aov: { min: 45, max: 75, step: 5 },
-      cogsPct: { min: 52, max: 68, step: 2 },
-      fixedCosts: { min: 12, max: 22, step: 2 },
-      trafficChgPct: { min: -15, max: 10, step: 5 },
-      convChgPp: { min: -3, max: 2, step: 1 },
-      aovChgPct: { min: -10, max: 12, step: 2 },
-      cogsChgPp: { min: -3, max: 5, step: 1 },
-      fixChgPct: { min: -5, max: 12, step: 2 }
-    },
-    decision: { type: "numeric" },
-    truth_howto: "Revenue = traffic × (convRate/100) × aov; GP = revenue × (1 - cogsPct/100); EBITDA = GP - fixedCosts",
-    severe_miss_rule: "opposite_sign",
-    time_limit_s: 90,
+    max_points: 4,
     scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
   },
 
   {
-    id: "profit-pharmacy-kiosk-v1",
-    category: "profitability",
-    title: "Grocery Pharmacy Kiosk",
-    stem_template: "A grocer adds pharmacy kiosks. Scripts/day: {scripts}, Price: ${price}, Gross margin: {gmPct}%, Staffing: ${staff}k/yr, Rent: ${rent}k/yr, Shrink: {shrinkPct}%, CAPEX: ${capex}k. What is the simple payback period in years?",
-    inputs: ["scripts", "price", "gmPct", "staff", "rent", "shrinkPct", "capex"],
+    id: "ms-concert-tickets-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Annual Concert Tickets",
+    stem_template: "City population: {population}k. Concert attendees: {attendPct}%. Average concerts per person per year: {freq}. How many tickets sold annually?",
+    inputs: ["population", "attendPct", "freq"],
     params: {
-      scripts: { min: 200, max: 450, step: 50 },
-      price: { min: 30, max: 60, step: 5 },
-      gmPct: { min: 28, max: 42, step: 2 },
-      staff: { min: 150, max: 280, step: 20 },
-      rent: { min: 45, max: 95, step: 10 },
-      shrinkPct: { min: 0.8, max: 1.8, step: 0.2 },
-      capex: { min: 450, max: 950, step: 50 }
+      population: { min: 200, max: 800, step: 100 },
+      attendPct: { min: 20, max: 40, step: 5 },
+      freq: { min: 1, max: 4, step: 1 }
     },
     decision: { type: "numeric" },
-    truth_howto: "Revenue = scripts × 365 × price; GP = revenue × (gmPct/100); Shrink = revenue × (shrinkPct/100); EBITDA = GP - staff×1000 - rent×1000 - Shrink; Payback = capex×1000 / EBITDA",
-    time_limit_s: 90,
-    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
-  },
-
-  {
-    id: "profit-saas-unit-econ-v1",
-    category: "profitability",
-    title: "SaaS Unit Economics",
-    stem_template: "A B2B SaaS company: ACV ${acv}k, Gross margin {gmPct}%, CAC ${cac}k, Avg customer lifetime {lifetime} years. What is the LTV:CAC ratio?",
-    inputs: ["acv", "gmPct", "cac", "lifetime"],
-    params: {
-      acv: { min: 12, max: 48, step: 4 },
-      gmPct: { min: 72, max: 88, step: 2 },
-      cac: { min: 8, max: 28, step: 2 },
-      lifetime: { min: 2.5, max: 5.5, step: 0.5 }
-    },
-    decision: { type: "numeric" },
-    truth_howto: "LTV = ACV × (gmPct/100) × lifetime; Ratio = LTV / CAC",
+    truth_howto: "tickets = population × 1000 × (attendPct/100) × freq",
     time_limit_s: 60,
+    max_points: 4,
     scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
   },
 
-  // ========== PRICING CASES ==========
   {
-    id: "pricing-oilgas-v1",
-    category: "pricing",
-    title: "Fuel Retailer Price Elasticity",
-    stem_template: "A fuels retailer considers a {priceChange}¢/gal price change. Elasticity: {elasticity}, Base volume: {baseVol}M gal/yr, Margin: {margin}¢/gal. What is the expected annual profit delta ($)?",
-    inputs: ["priceChange", "elasticity", "baseVol", "margin"],
+    id: "ms-textbooks-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Textbooks Sold Per Year",
+    stem_template: "University students: {students}k. Average textbooks per student: {books}. How many textbooks needed annually?",
+    inputs: ["students", "books"],
     params: {
-      priceChange: { min: -10, max: 12, step: 2 },
-      elasticity: { min: -1.8, max: -0.4, step: 0.2 },
-      baseVol: { min: 15, max: 65, step: 5 },
-      margin: { min: 8, max: 22, step: 2 }
+      students: { min: 20, max: 60, step: 10 },
+      books: { min: 4, max: 8, step: 1 }
     },
     decision: { type: "numeric" },
-    truth_howto: "See computePricingElasticity function",
-    time_limit_s: 75,
+    truth_howto: "textbooks = students × 1000 × books",
+    time_limit_s: 45,
+    max_points: 3,
     scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
   },
 
+  // More Quick Math Questions
   {
-    id: "pricing-saas-discount-v1",
-    category: "pricing",
-    title: "SaaS Discount Impact",
-    stem_template: "A SaaS firm tests a {disc}% discount. Base ACV: ${acv}k, Gross margin: {gmPct}%, Expected conversion lift: {convLift}pp, Churn increase: {churnInc}pp. Should they run the discount? (Annual cohort value impact)",
-    inputs: ["disc", "acv", "gmPct", "convLift", "churnInc"],
+    id: "qm-tax-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Sales Tax Calculation",
+    stem_template: "A purchase costs ${subtotal}. Sales tax is {taxRate}%. What's the total with tax?",
+    inputs: ["subtotal", "taxRate"],
     params: {
-      disc: { min: 10, max: 30, step: 5 },
-      acv: { min: 18, max: 42, step: 6 },
-      gmPct: { min: 75, max: 88, step: 2 },
-      convLift: { min: 5, max: 18, step: 2 },
-      churnInc: { min: 0, max: 8, step: 2 }
-    },
-    decision: {
-      type: "mcq",
-      options: [
-        "Run discount - strong positive impact",
-        "Run discount - marginal positive impact",
-        "Don't run - marginal negative impact",
-        "Don't run - strong negative impact"
-      ],
-      points: [4, 3, 2, 0]
-    },
-    truth_howto: "Compare cohort value: (1 + convLift) × (1 - disc) × gmPct × (retention impact)",
-    time_limit_s: 75
-  },
-
-  // ========== PE / FINANCE CASES ==========
-  {
-    id: "pe-dairy-v1",
-    category: "pe",
-    title: "Dairy Farm Screening",
-    stem_template: "Milk yield: {yieldPerCow} gal/cow/day, Herd size: {herd}, Milk price: ${price}/gal, Variable cost: ${varCost}/gal, Fixed costs: ${fixedCosts}k/yr, EV: ${ev}M, Target multiple: {targetMult}×. What's your recommendation?",
-    inputs: ["yieldPerCow", "herd", "price", "varCost", "fixedCosts", "ev", "targetMult"],
-    params: {
-      yieldPerCow: { min: 6, max: 9, step: 0.5 },
-      herd: { min: 350, max: 850, step: 50 },
-      price: { min: 3.2, max: 4.8, step: 0.2 },
-      varCost: { min: 1.8, max: 3.2, step: 0.2 },
-      fixedCosts: { min: 280, max: 520, step: 40 },
-      ev: { min: 4.5, max: 9.5, step: 0.5 },
-      targetMult: { min: 6.5, max: 8.5, step: 0.5 }
-    },
-    decision: {
-      type: "mcq",
-      options: [
-        "Buy now - attractive valuation",
-        "Buy with ops improvement plan",
-        "Pass - overvalued",
-        "Request additional due diligence first"
-      ],
-      points: [4, 3, 2, 1]
-    },
-    truth_howto: "See computePEscreen function",
-    time_limit_s: 90
-  },
-
-  {
-    id: "pe-rollup-synergy-v1",
-    category: "pe",
-    title: "PE Roll-Up Synergies",
-    stem_template: "Two HVAC companies, each with revenue ${rev}M and EBITDA margin {ebitdaPct}%. Synergies: COGS improvement {cogsPp}pp, SG&A reduction {sgaPp}pp, One-time integration cost ${oneTime}M. Combined EBITDA improvement ($M)?",
-    inputs: ["rev", "ebitdaPct", "cogsPp", "sgaPp", "oneTime"],
-    params: {
-      rev: { min: 18, max: 45, step: 3 },
-      ebitdaPct: { min: 12, max: 22, step: 2 },
-      cogsPp: { min: 2, max: 6, step: 1 },
-      sgaPp: { min: 3, max: 8, step: 1 },
-      oneTime: { min: 2, max: 6, step: 1 }
+      subtotal: { min: 50, max: 500, step: 50 },
+      taxRate: { min: 5, max: 10, step: 1 }
     },
     decision: { type: "numeric" },
-    truth_howto: "Combined revenue = 2 × rev; Synergy impact = revenue × ((cogsPp + sgaPp)/100); Net = synergy - oneTime (amortized)",
-    time_limit_s: 75,
+    truth_howto: "total = subtotal × (1 + taxRate/100)",
+    time_limit_s: 30,
+    max_points: 2,
     scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
   },
 
-  // ========== MARKET ENTRY CASES ==========
   {
-    id: "entry-waterpark-v1",
+    id: "qm-tip-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Restaurant Tip",
+    stem_template: "Your bill is ${bill}. You want to leave a {tipPct}% tip. How much tip should you leave?",
+    inputs: ["bill", "tipPct"],
+    params: {
+      bill: { min: 30, max: 150, step: 10 },
+      tipPct: { min: 15, max: 25, step: 5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "tip = bill × (tipPct/100)",
+    time_limit_s: 25,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-split-bill-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Split the Bill",
+    stem_template: "Total bill is ${total}. Split equally among {people} people. How much per person?",
+    inputs: ["total", "people"],
+    params: {
+      total: { min: 60, max: 200, step: 20 },
+      people: { min: 3, max: 8, step: 1 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "perPerson = total / people",
+    time_limit_s: 25,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-markup-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Retail Markup",
+    stem_template: "Cost is ${cost}. Markup is {markup}%. What's the selling price?",
+    inputs: ["cost", "markup"],
+    params: {
+      cost: { min: 20, max: 100, step: 10 },
+      markup: { min: 30, max: 100, step: 10 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "sellingPrice = cost × (1 + markup/100)",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-avg-sale-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Average Sale Value",
+    stem_template: "Total sales: ${totalSales}. Number of transactions: {transactions}. What's the average sale value?",
+    inputs: ["totalSales", "transactions"],
+    params: {
+      totalSales: { min: 5000, max: 25000, step: 5000 },
+      transactions: { min: 50, max: 250, step: 50 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "avgSale = totalSales / transactions",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-inventory-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Inventory Value",
+    stem_template: "You have {units} units in stock. Each unit cost ${unitCost}. What's total inventory value?",
+    inputs: ["units", "unitCost"],
+    params: {
+      units: { min: 100, max: 1000, step: 100 },
+      unitCost: { min: 10, max: 50, step: 5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "inventoryValue = units × unitCost",
+    time_limit_s: 25,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-growth-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Revenue Growth",
+    stem_template: "Last year revenue: ${lastYear}. This year revenue: ${thisYear}. What's the dollar growth?",
+    inputs: ["lastYear", "thisYear"],
+    params: {
+      lastYear: { min: 50000, max: 150000, step: 25000 },
+      thisYear: { min: 60000, max: 200000, step: 25000 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "growth = thisYear - lastYear",
+    time_limit_s: 25,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-conversion-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Conversion Rate",
+    stem_template: "{visitors} people visited your website. {buyers} made a purchase. What's the conversion rate in percent?",
+    inputs: ["visitors", "buyers"],
+    params: {
+      visitors: { min: 1000, max: 5000, step: 500 },
+      buyers: { min: 50, max: 500, step: 50 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "conversionPct = (buyers / visitors) × 100",
+    time_limit_s: 35,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-capacity-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Production Capacity",
+    stem_template: "Factory produces {perHour} units per hour. Works {hours} hours per day. What's daily production?",
+    inputs: ["perHour", "hours"],
+    params: {
+      perHour: { min: 50, max: 200, step: 25 },
+      hours: { min: 8, max: 16, step: 2 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "dailyProduction = perHour × hours",
+    time_limit_s: 25,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "qm-rent-per-sqft-1",
+    category: "quick_math",
+    difficulty: "quick",
+    title: "Cost Per Square Foot",
+    stem_template: "Office rent is ${rent}/month for {sqft} square feet. What's the cost per square foot?",
+    inputs: ["rent", "sqft"],
+    params: {
+      rent: { min: 3000, max: 12000, step: 1000 },
+      sqft: { min: 500, max: 2000, step: 250 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "costPerSqft = rent / sqft",
+    time_limit_s: 30,
+    max_points: 2,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  // More Market Sizing Questions
+  {
+    id: "ms-streaming-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Streaming Subscriptions",
+    stem_template: "City has {population}k people. Households average {peoplePerHH} people. {subPct}% of households have streaming. How many subscriptions?",
+    inputs: ["population", "peoplePerHH", "subPct"],
+    params: {
+      population: { min: 200, max: 1000, step: 100 },
+      peoplePerHH: { min: 2, max: 4, step: 0.5 },
+      subPct: { min: 60, max: 85, step: 5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "subscriptions = (population × 1000 / peoplePerHH) × (subPct/100)",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "ms-coffee-shops-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Coffee Shop Market Size",
+    stem_template: "Town population: {population}k. Coffee drinkers: {drinkerPct}%. Average spend per person per month: ${spend}. What's monthly market size?",
+    inputs: ["population", "drinkerPct", "spend"],
+    params: {
+      population: { min: 50, max: 300, step: 50 },
+      drinkerPct: { min: 40, max: 70, step: 5 },
+      spend: { min: 20, max: 60, step: 10 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "marketSize = population × 1000 × (drinkerPct/100) × spend",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "ms-smartphone-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Smartphone Replacements",
+    stem_template: "State population: {population}M. Smartphone ownership: {ownPct}%. Replacement cycle: every {years} years. How many phones replaced annually?",
+    inputs: ["population", "ownPct", "years"],
+    params: {
+      population: { min: 5, max: 25, step: 5 },
+      ownPct: { min: 75, max: 95, step: 5 },
+      years: { min: 2, max: 4, step: 1 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "replacements = (population × 1e6 × (ownPct/100)) / years",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "ms-restaurant-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Restaurant Visits",
+    stem_template: "City: {population}k people. {dineOutPct}% dine out. Average {freq} times/month. How many restaurant visits monthly?",
+    inputs: ["population", "dineOutPct", "freq"],
+    params: {
+      population: { min: 100, max: 500, step: 100 },
+      dineOutPct: { min: 50, max: 80, step: 5 },
+      freq: { min: 2, max: 8, step: 1 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "visits = population × 1000 × (dineOutPct/100) × freq",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "ms-dog-food-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Dog Food Market",
+    stem_template: "Region: {households}k households. Dog ownership: {dogPct}%. Avg spend/month: ${spend}. What's monthly dog food market?",
+    inputs: ["households", "dogPct", "spend"],
+    params: {
+      households: { min: 100, max: 500, step: 100 },
+      dogPct: { min: 25, max: 45, step: 5 },
+      spend: { min: 30, max: 80, step: 10 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "market = households × 1000 × (dogPct/100) × spend",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "ms-haircuts-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Annual Haircuts",
+    stem_template: "Town: {population}k people. {freq} haircuts per person per year. How many haircuts annually?",
+    inputs: ["population", "freq"],
+    params: {
+      population: { min: 50, max: 300, step: 50 },
+      freq: { min: 4, max: 12, step: 2 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "haircuts = population × 1000 × freq",
+    time_limit_s: 45,
+    max_points: 3,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "ms-ride-share-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Ride Share Trips",
+    stem_template: "City: {population}k. Adults (18+): {adultPct}%. Use ride share: {userPct}%. Avg {freq} trips/month. Monthly trips?",
+    inputs: ["population", "adultPct", "userPct", "freq"],
+    params: {
+      population: { min: 200, max: 1000, step: 100 },
+      adultPct: { min: 70, max: 85, step: 5 },
+      userPct: { min: 30, max: 60, step: 5 },
+      freq: { min: 2, max: 8, step: 2 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "trips = population × 1000 × (adultPct/100) × (userPct/100) × freq",
+    time_limit_s: 75,
+    max_points: 5,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "ms-fitness-class-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Fitness Classes Weekly",
+    stem_template: "Gym has {members}k members. {attendPct}% attend classes. Avg {freq} classes/week. Weekly class attendances?",
+    inputs: ["members", "attendPct", "freq"],
+    params: {
+      members: { min: 5, max: 20, step: 5 },
+      attendPct: { min: 30, max: 60, step: 5 },
+      freq: { min: 2, max: 5, step: 1 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "attendances = members × 1000 × (attendPct/100) × freq",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "ms-movie-tickets-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Movie Tickets Sold",
+    stem_template: "City: {population}k. Moviegoers: {goerPct}%. Avg {freq} movies/year. Annual tickets sold?",
+    inputs: ["population", "goerPct", "freq"],
+    params: {
+      population: { min: 150, max: 600, step: 100 },
+      goerPct: { min: 40, max: 70, step: 5 },
+      freq: { min: 3, max: 12, step: 2 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "tickets = population × 1000 × (goerPct/100) × freq",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "ms-meal-kit-1",
+    category: "market_sizing",
+    difficulty: "full",
+    title: "Meal Kit Subscriptions",
+    stem_template: "Region: {households}k households. Interest in meal kits: {interestPct}%. Actually subscribe: {subPct}%. How many subscriptions?",
+    inputs: ["households", "interestPct", "subPct"],
+    params: {
+      households: { min: 200, max: 800, step: 100 },
+      interestPct: { min: 40, max: 70, step: 5 },
+      subPct: { min: 15, max: 40, step: 5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "subscriptions = households × 1000 × (interestPct/100) × (subPct/100)",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  // Some Full Case Questions (simpler than original)
+  {
+    id: "fc-expansion-1",
     category: "market_entry",
-    title: "Water Park Expansion NPV",
-    stem_template: "Regional park weighs second site. TAM: {tam}M visits/yr, Share ramp: Y1 {r1}%, Y2 {r2}%, Y3 {r3}%, Ticket: ${ticket}, Var cost: ${varCost}, Fixed: ${fixedCosts}M/yr, CAPEX: ${capex}M, Discount rate: {disc}%. What's your recommendation?",
-    inputs: ["tam", "r1", "r2", "r3", "ticket", "varCost", "fixedCosts", "capex", "disc"],
+    difficulty: "full",
+    title: "Store Expansion Decision",
+    stem_template: "New store costs ${setupCost}k to open. Expected monthly profit: ${monthlyProfit}k. How many months to break even?",
+    inputs: ["setupCost", "monthlyProfit"],
     params: {
-      tam: { min: 2.5, max: 5.5, step: 0.5 },
-      r1: { min: 3, max: 7, step: 1 },
-      r2: { min: 7, max: 12, step: 1 },
-      r3: { min: 10, max: 16, step: 1 },
-      ticket: { min: 32, max: 58, step: 4 },
-      varCost: { min: 8, max: 18, step: 2 },
-      fixedCosts: { min: 4, max: 12, step: 2 },
-      capex: { min: 75, max: 165, step: 15 },
-      disc: { min: 8, max: 12, step: 1 }
-    },
-    decision: {
-      type: "mcq",
-      options: [
-        "Open now - strong NPV",
-        "Delay 1 year - marginal case",
-        "Cancel - negative NPV"
-      ],
-      points: [4, 2, 1]
-    },
-    truth_howto: "See computeWaterParkNPV function",
-    time_limit_s: 90
-  },
-
-  {
-    id: "entry-snacks-germany-v1",
-    category: "market_entry",
-    title: "Snack Brand Germany Entry",
-    stem_template: "US snack brand considers Germany via retail partners. TAM: {tam}M units, Feasible share: {share}%, Price: €{price}, Var cost: €{varCost}, Fixed: €{fixedCosts}M/yr, Partner fee: {partnerPct}% of revenue. Year 1 profit (€M)?",
-    inputs: ["tam", "share", "price", "varCost", "fixedCosts", "partnerPct"],
-    params: {
-      tam: { min: 180, max: 320, step: 20 },
-      share: { min: 2, max: 8, step: 1 },
-      price: { min: 2.5, max: 4.5, step: 0.5 },
-      varCost: { min: 1.0, max: 2.2, step: 0.2 },
-      fixedCosts: { min: 3, max: 8, step: 1 },
-      partnerPct: { min: 8, max: 18, step: 2 }
+      setupCost: { min: 100, max: 300, step: 50 },
+      monthlyProfit: { min: 10, max: 30, step: 5 }
     },
     decision: { type: "numeric" },
-    truth_howto: "Volume = TAM × (share/100); Revenue = volume × price; Contribution = (price - varCost) × volume; Profit = contribution - fixedCosts - (revenue × partnerPct/100)",
-    time_limit_s: 75,
+    truth_howto: "months = setupCost / monthlyProfit",
+    time_limit_s: 45,
+    max_points: 3,
     scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
   },
 
-  // ========== OPS CASES ==========
   {
-    id: "ops-throughput-defects-v1",
+    id: "fc-pricing-1",
+    category: "pricing",
+    difficulty: "full",
+    title: "Optimal Price Point",
+    stem_template: "At ${price1} you sell {units1} units. At ${price2} you sell {units2} units. Which price gives higher revenue?",
+    inputs: ["price1", "units1", "price2", "units2"],
+    params: {
+      price1: { min: 20, max: 40, step: 5 },
+      units1: { min: 800, max: 1200, step: 100 },
+      price2: { min: 25, max: 50, step: 5 },
+      units2: { min: 500, max: 900, step: 100 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "maxRevenue = Math.max(price1 × units1, price2 × units2)",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "fc-cost-cutting-1",
+    category: "profitability",
+    difficulty: "full",
+    title: "Cost Reduction Impact",
+    stem_template: "Current costs: ${currentCost}k/month. Reduce by {reductionPct}%. What are annual savings?",
+    inputs: ["currentCost", "reductionPct"],
+    params: {
+      currentCost: { min: 50, max: 200, step: 25 },
+      reductionPct: { min: 10, max: 30, step: 5 }
+    },
+    decision: { type: "numeric" },
+    truth_howto: "annualSavings = currentCost × (reductionPct/100) × 12",
+    time_limit_s: 60,
+    max_points: 4,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
+  },
+
+  {
+    id: "fc-capacity-2",
     category: "ops",
-    title: "Factory Ops Lever Selection",
-    stem_template: "Factory: Throughput {tp}k units/wk, Defect rate {dr}%, Backlog {backlog}k units. Contribution margin: ${margin}/unit. Four levers available. Which has largest 3-month EBITDA impact?",
-    inputs: ["tp", "dr", "backlog", "margin"],
+    difficulty: "full",
+    title: "Warehouse Utilization",
+    stem_template: "Warehouse holds {maxUnits} units. Currently {currentUnits} units stored. What % of capacity is being used?",
+    inputs: ["maxUnits", "currentUnits"],
     params: {
-      tp: { min: 45, max: 95, step: 5 },
-      dr: { min: 3, max: 12, step: 1 },
-      backlog: { min: 15, max: 55, step: 5 },
-      margin: { min: 18, max: 42, step: 4 }
+      maxUnits: { min: 5000, max: 20000, step: 2500 },
+      currentUnits: { min: 3000, max: 15000, step: 2000 }
     },
-    decision: {
-      type: "mcq",
-      options: [
-        "+15% throughput (cost: $200k)",
-        "-50% defect rate (cost: $180k)",
-        "Clear backlog with overtime (cost: $150k)",
-        "Combo: +8% throughput & -25% defects (cost: $280k)"
-      ],
-      points: [3, 4, 2, 3]
-    },
-    truth_howto: "Calculate incremental good units × margin - cost for each option",
-    time_limit_s: 90
+    decision: { type: "numeric" },
+    truth_howto: "utilizationPct = (currentUnits / maxUnits) × 100",
+    time_limit_s: 45,
+    max_points: 3,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
   },
 
   {
-    id: "ops-ecommerce-funnel-v1",
-    category: "ops",
-    title: "E-Commerce Funnel Optimization",
-    stem_template: "Monthly traffic: {traffic}k, CTR: {ctr}%, Add-to-cart: {atc}%, Checkout: {chk}%, Conversion: {conv}%, AOV: ${aov}, Margin: {margin}%. Which lever has highest monthly profit impact?",
-    inputs: ["traffic", "ctr", "atc", "chk", "conv", "aov", "margin"],
+    id: "fc-marketing-roi-1",
+    category: "profitability",
+    difficulty: "full",
+    title: "Marketing Return",
+    stem_template: "Spent ${adSpend}k on ads. Generated ${revenue}k in revenue. What's the return on ad spend (revenue/spend)?",
+    inputs: ["adSpend", "revenue"],
     params: {
-      traffic: { min: 180, max: 380, step: 20 },
-      ctr: { min: 2.2, max: 4.5, step: 0.3 },
-      atc: { min: 18, max: 32, step: 2 },
-      chk: { min: 55, max: 75, step: 5 },
-      conv: { min: 42, max: 68, step: 4 },
-      aov: { min: 75, max: 145, step: 10 },
-      margin: { min: 28, max: 48, step: 4 }
+      adSpend: { min: 10, max: 50, step: 10 },
+      revenue: { min: 30, max: 200, step: 20 }
     },
-    decision: {
-      type: "mcq",
-      options: [
-        "+20% traffic (cost: $25k/mo)",
-        "+15% CTR (cost: $18k/mo)",
-        "+10% conversion (cost: $22k/mo)",
-        "+12% AOV via upsells (cost: $15k/mo)"
-      ],
-      points: [2, 3, 4, 3]
-    },
-    truth_howto: "Baseline orders = traffic × CTR × ATC × CHK × CONV; Profit = orders × AOV × margin - cost",
-    time_limit_s: 90
-  },
-
-  // ========== PUBLIC SECTOR CASES ==========
-  {
-    id: "public-edu-portfolio-v1",
-    category: "public",
-    title: "School System Portfolio Allocation",
-    stem_template: "Budget: ${budget}M for {students}k students across 3 programs. Tutoring: ${tutorCost}/student, +{tutorLift}pp proficiency. Teacher pipeline: ${teacherCost}/student, +{teacherLift}pp. Data platform: ${dataCost}/student, +{dataLift}pp. Optimize for impact per dollar.",
-    inputs: ["budget", "students", "tutorCost", "tutorLift", "teacherCost", "teacherLift", "dataCost", "dataLift"],
-    params: {
-      budget: { min: 15, max: 35, step: 5 },
-      students: { min: 45, max: 85, step: 5 },
-      tutorCost: { min: 180, max: 320, step: 20 },
-      tutorLift: { min: 8, max: 15, step: 1 },
-      teacherCost: { min: 250, max: 420, step: 30 },
-      teacherLift: { min: 12, max: 22, step: 2 },
-      dataCost: { min: 80, max: 180, step: 20 },
-      dataLift: { min: 4, max: 10, step: 1 }
-    },
-    decision: {
-      type: "mcq",
-      options: [
-        "100% Tutoring",
-        "100% Teacher pipeline",
-        "100% Data platform",
-        "60% Teacher, 40% Data"
-      ],
-      points: [2, 3, 4, 3]
-    },
-    truth_howto: "Impact/$ = (lift per student) / cost; Rank options by this ratio and budget fit",
-    time_limit_s: 90
-  },
-
-  {
-    id: "public-city-budget-v1",
-    category: "public",
-    title: "City Budget Gap Closure",
-    stem_template: "City faces ${gap}M deficit. Revenue options: Parking fee +${parkRev}M, Collections +${collRev}M. Expense options: Vendor renegotiation -${vendorSave}M, Overtime reduction -${otSave}M. Minimize service impact while closing gap.",
-    inputs: ["gap", "parkRev", "collRev", "vendorSave", "otSave"],
-    params: {
-      gap: { min: 18, max: 42, step: 4 },
-      parkRev: { min: 6, max: 14, step: 2 },
-      collRev: { min: 4, max: 10, step: 2 },
-      vendorSave: { min: 8, max: 18, step: 2 },
-      otSave: { min: 5, max: 12, step: 1 }
-    },
-    decision: {
-      type: "mcq",
-      options: [
-        "All revenue levers (parking + collections)",
-        "All expense levers (vendor + OT)",
-        "Balanced mix: vendor + parking + partial OT",
-        "Aggressive: all four levers"
-      ],
-      points: [2, 3, 4, 2]
-    },
-    truth_howto: "Sum impacts and compare to gap; rank by feasibility (expense cuts > fees) and impact",
-    time_limit_s: 75
+    decision: { type: "numeric" },
+    truth_howto: "roas = revenue / adSpend",
+    time_limit_s: 45,
+    max_points: 3,
+    scoring: { tolerance_bands: [0.05, 0.10, 0.20, 0.30] }
   }
 ];

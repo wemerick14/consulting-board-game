@@ -33,14 +33,26 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
 
     case "START_TURN": {
-      // Generate a new case
+      // Move to choice phase instead of directly to prompt
+      return {
+        ...state,
+        phase: "choice",
+        chosenDifficulty: undefined,
+        lastGradingResult: undefined
+      };
+    }
+
+    case "CHOOSE_DIFFICULTY": {
+      // Generate a case based on chosen difficulty
       const seed = Date.now() + state.turnIndex + state.promptsCompleted;
-      const randomTemplate = caseDatabase[Math.floor(Math.random() * caseDatabase.length)];
+      const templatesWithDifficulty = caseDatabase.filter(t => t.difficulty === action.difficulty);
+      const randomTemplate = templatesWithDifficulty[Math.floor(Math.random() * templatesWithDifficulty.length)];
       const prompt = generateCase(randomTemplate, seed);
 
       return {
         ...state,
         phase: "prompt",
+        chosenDifficulty: action.difficulty,
         activePrompt: prompt
       };
     }
@@ -98,6 +110,18 @@ function gameReducer(state: GameState, action: GameAction): GameState {
               }
             : p
         ),
+        lastGradingResult: {
+          points: action.earnedPoints,
+          severeMiss: action.isSevereMiss
+        },
+        phase: "results"
+      };
+    }
+
+    case "SHOW_RESULTS": {
+      // Transition from results to end turn
+      return {
+        ...state,
         phase: "transition"
       };
     }

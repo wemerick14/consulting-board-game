@@ -34,7 +34,10 @@ export type CaseCategory =
   | "pricing"
   | "ops"
   | "pe"
-  | "public";
+  | "public"
+  | "quick_math";
+
+export type Difficulty = "quick" | "full";
 
 export type ParamDef = {
   min?: number;
@@ -50,6 +53,7 @@ export type DecisionType =
 export type CaseTemplate = {
   id: string;
   category: CaseCategory;
+  difficulty: Difficulty;
   title: string;
   stem_template: string; // "A {segment} retailer..."
   inputs: string[]; // names of parameters players will see
@@ -59,6 +63,7 @@ export type CaseTemplate = {
   severe_miss_rule?: "opposite_sign" | "overshoot_x2" | "none";
   time_limit_s: number; // 60–90
   scoring?: { tolerance_bands?: number[] }; // numeric grading bands
+  max_points?: number; // Max points for this question
 };
 
 // Prompt Instance
@@ -76,7 +81,7 @@ export type PromptInstance = {
 };
 
 // Game State
-export type GamePhase = "setup" | "idle" | "prompt" | "grading" | "transition" | "end";
+export type GamePhase = "setup" | "idle" | "choice" | "prompt" | "grading" | "results" | "transition" | "end";
 
 export type GameSettings = {
   timerSecs: 60 | 75 | 90;
@@ -89,6 +94,8 @@ export type GameState = {
   board: Tile[];
   phase: GamePhase;
   activePrompt?: PromptInstance;
+  chosenDifficulty?: Difficulty;
+  lastGradingResult?: { points: number; severeMiss: boolean };
   settings: GameSettings;
   sessionStartTime: number;
   promptsCompleted: number;
@@ -98,8 +105,10 @@ export type GameState = {
 export type GameAction =
   | { type: "START_GAME"; players: Player[]; settings: GameSettings }
   | { type: "START_TURN" }
+  | { type: "CHOOSE_DIFFICULTY"; difficulty: Difficulty }
   | { type: "SUBMIT_ANSWER"; answer: number | number }
   | { type: "APPLY_GRADING"; earnedPoints: number; isSevereMiss: boolean }
+  | { type: "SHOW_RESULTS" }
   | { type: "ADVANCE_TOKEN"; spaces: number }
   | { type: "END_TURN" }
   | { type: "USE_ADD60" }
