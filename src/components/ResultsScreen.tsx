@@ -10,9 +10,9 @@ interface Props {
 
 // Career milestones
 const CAREER_MILESTONES = [
-  { position: 0, rank: "Analyst", emoji: "👔" },
-  { position: 2, rank: "Sr Analyst", emoji: "📊" },
-  { position: 8, rank: "Associate", emoji: "💼" },
+  { position: 0, rank: "Associate", emoji: "💼" },
+  { position: 2, rank: "Analyst", emoji: "👔" },
+  { position: 8, rank: "Sr Analyst", emoji: "📊" },
   { position: 14, rank: "Manager", emoji: "📈" },
   { position: 16, rank: "Director", emoji: "🎯" },
   { position: 18, rank: "Partner", emoji: "🏆" }

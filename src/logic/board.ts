@@ -6,13 +6,13 @@ import type { Tile } from "../types";
 export function createBoard(): Tile[] {
   const board: Tile[] = [];
 
-  // 0-5: Analyst to first fork
+  // 0-5: Associate to first fork
   for (let i = 0; i <= 5; i++) {
     board.push({
       id: `tile-${i}`,
       kind: i === 2 ? "promotion" : "normal",
       next: [i + 1],
-      label: i === 2 ? "Sr Analyst" : undefined
+      label: i === 2 ? "Analyst" : undefined
     });
   }
 
@@ -30,7 +30,7 @@ export function createBoard(): Tile[] {
       id: `tile-${i}`,
       kind: i === 8 ? "promotion" : "normal",
       next: [i + 1],
-      label: i === 8 ? "Associate" : undefined
+      label: i === 8 ? "Sr Analyst" : undefined
     });
   }
 
@@ -87,9 +87,9 @@ export function createBoard(): Tile[] {
  * Get rank name based on position
  */
 export function getRankFromPosition(position: number): string {
-  if (position <= 2) return "Analyst";
-  if (position <= 8) return "Sr Analyst";
-  if (position <= 14) return "Associate";
+  if (position <= 2) return "Associate";
+  if (position <= 8) return "Analyst";
+  if (position <= 14) return "Sr Analyst";
   if (position <= 16) return "Manager";
   if (position <= 17) return "Director";
   if (position === 18) return "Partner";
