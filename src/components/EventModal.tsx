@@ -128,10 +128,15 @@ export function EventModal({ eventId, outcome, onChooseOption, onContinue }: Eve
         )}
 
         {/* Continue Button - Only for simple/resolved events */}
-        {!isChoiceEvent && onContinue && (
+        {!isChoiceEvent && (
           <button
-            onClick={onContinue}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            onClick={() => {
+              if (onContinue) {
+                onContinue();
+              }
+            }}
+            disabled={!onContinue}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Continue
           </button>
