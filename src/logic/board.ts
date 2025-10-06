@@ -10,9 +10,10 @@ export function createBoard(): Tile[] {
   for (let i = 0; i <= 5; i++) {
     board.push({
       id: `tile-${i}`,
-      kind: i === 2 ? "promotion" : "normal",
+      kind: i === 2 ? "promotion" : (i === 4 ? "event" : "normal"),
       next: [i + 1],
-      label: i === 2 ? "Analyst" : undefined
+      label: i === 2 ? "Analyst" : (i === 4 ? "Networking" : undefined),
+      eventId: i === 4 ? "networking-win" : undefined
     });
   }
 
@@ -21,16 +22,17 @@ export function createBoard(): Tile[] {
     id: "tile-6",
     kind: "riskFork",
     next: [7, 20], // 7=normal, 20=risk1
-    label: "Fork 1"
+    label: "Risk or Safe?"
   });
 
   // 7-11: Normal path to second fork
   for (let i = 7; i <= 11; i++) {
     board.push({
       id: `tile-${i}`,
-      kind: i === 8 ? "promotion" : "normal",
+      kind: i === 8 ? "promotion" : (i === 7 ? "event" : (i === 10 ? "event" : "normal")),
       next: [i + 1],
-      label: i === 8 ? "Sr Analyst" : undefined
+      label: i === 8 ? "Sr Analyst" : (i === 7 ? "Staffing" : (i === 10 ? "Client Crisis" : undefined)),
+      eventId: i === 7 ? "staffing-crunch" : (i === 10 ? "client-crisis" : undefined)
     });
   }
 
@@ -39,16 +41,17 @@ export function createBoard(): Tile[] {
     id: "tile-12",
     kind: "riskFork",
     next: [13, 23], // 13=normal, 23=risk2
-    label: "Fork 2"
+    label: "Final Push?"
   });
 
   // 13-17: Normal path to retirement
   for (let i = 13; i <= 17; i++) {
     board.push({
       id: `tile-${i}`,
-      kind: i === 14 ? "promotion" : (i === 16 ? "promotion" : "normal"),
+      kind: i === 14 ? "promotion" : (i === 16 ? "promotion" : (i === 15 ? "event" : "normal")),
       next: i === 17 ? [18] : [i + 1],
-      label: i === 14 ? "Manager" : (i === 16 ? "Director" : undefined)
+      label: i === 14 ? "Manager" : (i === 16 ? "Director" : (i === 15 ? "Promotion?" : undefined)),
+      eventId: i === 15 ? "promotion-review" : undefined
     });
   }
 
@@ -60,25 +63,47 @@ export function createBoard(): Tile[] {
     label: "Retirement"
   });
 
-  // 20-22: Risk Route 1 (rejoins at 13)
-  for (let i = 20; i <= 22; i++) {
-    board.push({
-      id: `tile-${i}-risk1`,
-      kind: "normal",
-      next: i === 22 ? [13] : [i + 1],
-      label: `Risk 1-${i - 19}`
-    });
-  }
+  // 20-22: Risk Route 1 - Startup Detour (rejoins at 13)
+  board.push({
+    id: "tile-20-risk1",
+    kind: "normal",
+    next: [21],
+    label: "🚀 Join Startup"
+  });
+  board.push({
+    id: "tile-21-risk1",
+    kind: "event",
+    next: [22],
+    label: "Pivot?",
+    eventId: "startup-pivot"
+  });
+  board.push({
+    id: "tile-22-risk1",
+    kind: "normal",
+    next: [13], // Rejoin at Manager level
+    label: "Exit Strategy"
+  });
 
-  // 23-25: Risk Route 2 (rejoins at 18)
-  for (let i = 23; i <= 25; i++) {
-    board.push({
-      id: `tile-${i}-risk2`,
-      kind: "normal",
-      next: i === 25 ? [18] : [i + 1],
-      label: `Risk 2-${i - 22}`
-    });
-  }
+  // 23-25: Risk Route 2 - M&A Fast Track (can skip to 18)
+  board.push({
+    id: "tile-23-risk2",
+    kind: "normal",
+    next: [24],
+    label: "💼 Lead M&A"
+  });
+  board.push({
+    id: "tile-24-risk2",
+    kind: "event",
+    next: [25],
+    label: "Deal Closes",
+    eventId: "deal-closes"
+  });
+  board.push({
+    id: "tile-25-risk2",
+    kind: "normal",
+    next: [18], // Can skip to Partner if event successful
+    label: "Partner Track"
+  });
 
   return board;
 }

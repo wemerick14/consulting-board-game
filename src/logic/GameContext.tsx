@@ -119,7 +119,32 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     case "SHOW_RESULTS": {
-      // Transition from results to end turn
+      // Check if player landed on special tile
+      const currentPlayer = state.players[state.turnIndex];
+      const currentTile = state.board[currentPlayer.position];
+
+      // Check for event tile
+      if (currentTile.kind === "event" && currentTile.eventId) {
+        return {
+          ...state,
+          phase: "event",
+          activeEvent: { id: currentTile.eventId }
+        };
+      }
+
+      // Check for fork tile
+      if (currentTile.kind === "riskFork" && currentTile.next && currentTile.next.length > 1) {
+        return {
+          ...state,
+          phase: "fork",
+          forkDecision: {
+            fromTile: currentPlayer.position,
+            options: currentTile.next
+          }
+        };
+      }
+
+      // No special tile, proceed to transition
       return {
         ...state,
         phase: "transition"
@@ -202,6 +227,89 @@ function gameReducer(state: GameState, action: GameAction): GameState {
               }
             : p
         )
+      };
+    }
+
+    case "TRIGGER_EVENT": {
+      // Trigger an event when player lands on event tile
+      return {
+        ...state,
+        phase: "event",
+        activeEvent: { id: action.eventId }
+      };
+    }
+
+    case "RESOLVE_EVENT": {
+      // Apply event outcome to current player
+      const outcome = action.outcome;
+
+      let updatedPlayers = state.players.map((p, idx) => {
+        if (idx !== state.turnIndex) return p;
+
+        let updates: any = {};
+
+        // Apply points change
+        if (outcome.pointsChange) {
+          updates.points = p.points + outcome.pointsChange;
+        }
+
+        // Apply position change
+        if (outcome.positionChange) {
+          const newPos = Math.max(0, Math.min(p.position + outcome.positionChange, state.board.length - 1));
+          updates.position = newPos;
+          updates.rank = getRankFromPosition(newPos);
+        }
+
+        // Apply credits change
+        if (outcome.creditsChange) {
+          updates.credits = { ...p.credits };
+          if (outcome.creditsChange.add60) {
+            updates.credits.add60 = Math.max(0, p.credits.add60 + outcome.creditsChange.add60);
+          }
+          if (outcome.creditsChange.fiveWordHint) {
+            updates.credits.fiveWordHint = Math.max(0, p.credits.fiveWordHint + outcome.creditsChange.fiveWordHint);
+          }
+          if (outcome.creditsChange.googlePeek) {
+            updates.credits.googlePeek = Math.max(0, p.credits.googlePeek + outcome.creditsChange.googlePeek);
+          }
+        }
+
+        return { ...p, ...updates };
+      });
+
+      // Track this event to avoid immediate repetition
+      const recentEvents = [...(state.recentEvents || []), state.activeEvent!.id].slice(-5);
+
+      return {
+        ...state,
+        players: updatedPlayers,
+        activeEvent: { ...state.activeEvent!, outcome },
+        recentEvents,
+        phase: "event" // Stay in event phase to show outcome
+      };
+    }
+
+    case "CHOOSE_EVENT_OPTION": {
+      // Player chose an option in a choice event
+      // This will be handled by resolving to an outcome
+      return state; // The component will call RESOLVE_EVENT after processing choice
+    }
+
+    case "CHOOSE_FORK_PATH": {
+      // Player chooses which path to take at a fork
+      return {
+        ...state,
+        players: state.players.map((p, idx) =>
+          idx === state.turnIndex
+            ? {
+                ...p,
+                position: action.targetTile,
+                rank: getRankFromPosition(action.targetTile)
+              }
+            : p
+        ),
+        phase: "choice", // Go back to difficulty choice
+        forkDecision: undefined
       };
     }
 

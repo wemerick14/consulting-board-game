@@ -88,8 +88,17 @@ export type PromptInstance = {
   timeLimit: number;
 };
 
+// Events
+export type EventOutcome = {
+  pointsChange?: number;
+  creditsChange?: { add60?: number; googlePeek?: number; fiveWordHint?: number };
+  positionChange?: number;
+  toleranceBoost?: boolean;
+  difficultyOverride?: "quick" | "full";
+};
+
 // Game State
-export type GamePhase = "setup" | "idle" | "choice" | "prompt" | "grading" | "results" | "transition" | "end";
+export type GamePhase = "setup" | "idle" | "choice" | "prompt" | "grading" | "results" | "transition" | "end" | "event" | "fork";
 
 export type GameSettings = {
   timerSecs: 60 | 75 | 90;
@@ -104,6 +113,9 @@ export type GameState = {
   activePrompt?: PromptInstance;
   chosenDifficulty?: Difficulty;
   lastGradingResult?: { points: number; severeMiss: boolean };
+  activeEvent?: { id: string; outcome?: EventOutcome };
+  forkDecision?: { fromTile: number; options: number[] };
+  recentEvents?: string[]; // Track recent event IDs to avoid repetition
   settings: GameSettings;
   sessionStartTime: number;
   promptsCompleted: number;
@@ -122,5 +134,9 @@ export type GameAction =
   | { type: "USE_ADD60" }
   | { type: "USE_GOOGLE_PEEK" }
   | { type: "USE_HINT" }
+  | { type: "TRIGGER_EVENT"; eventId: string }
+  | { type: "RESOLVE_EVENT"; outcome: EventOutcome }
+  | { type: "CHOOSE_EVENT_OPTION"; choiceIndex: number }
+  | { type: "CHOOSE_FORK_PATH"; targetTile: number }
   | { type: "END_GAME" }
   | { type: "RESET_GAME" };

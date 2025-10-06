@@ -9,10 +9,13 @@ import { PassScreen } from "./ui/PassScreen";
 import { SummaryModal } from "./ui/SummaryModal";
 import { ChoiceScreen } from "./components/ChoiceScreen";
 import { ResultsScreen } from "./components/ResultsScreen";
+import { EventModal } from "./components/EventModal";
+import { ForkChoiceModal } from "./components/ForkChoiceModal";
 import { gradeNumeric, gradeMcq, isSevereMiss } from "./logic/grading";
 import { caseDatabase } from "./cases/caseDatabase";
 import { generateHint } from "./logic/case-gen";
-import type { Difficulty } from "./types";
+import { getEventById } from "./logic/events";
+import type { Difficulty, EventOutcome } from "./types";
 
 function App() {
   const { state, dispatch } = useGame();
@@ -278,6 +281,83 @@ function App() {
             Position updated! Next turn...
           </div>
         </div>
+      </div>
+    );
+  }
+
+  // Handle event phase - show event modal
+  if (state.phase === "event" && state.activeEvent) {
+    const handleEventChoice = (choiceIndex: number) => {
+      const event = getEventById(state.activeEvent!.id);
+      if (!event || !event.choices) return;
+
+      const choice = event.choices[choiceIndex];
+      let outcome: EventOutcome = {};
+
+      // Handle probability-based outcomes
+      if (choice.effect.probability !== undefined) {
+        const success = Math.random() < choice.effect.probability;
+        outcome = success ? choice.effect.successEffect : choice.effect.failEffect;
+      } else {
+        // Direct outcome
+        outcome = {
+          pointsChange: choice.effect.pointsChange,
+          positionChange: choice.effect.positionChange,
+          creditsChange: choice.effect.creditsChange
+        };
+      }
+
+      dispatch({ type: "RESOLVE_EVENT", outcome });
+    };
+
+    const handleEventContinue = () => {
+      // If event has an outcome (resolved), go to next phase
+      if (state.activeEvent?.outcome) {
+        dispatch({ type: "SHOW_RESULTS" });
+      } else {
+        // Simple event with direct effect
+        const event = getEventById(state.activeEvent?.id || "");
+        if (event?.effect) {
+          dispatch({ type: "RESOLVE_EVENT", outcome: event.effect });
+        }
+      }
+    };
+
+    return (
+      <div className="min-h-screen bg-gray-50 p-4">
+        <Scorebar
+          players={state.players}
+          currentTurnIndex={state.turnIndex}
+          onResetGame={() => dispatch({ type: "RESET_GAME" })}
+        />
+        <Board board={state.board} players={state.players} />
+
+        <EventModal
+          eventId={state.activeEvent.id}
+          outcome={state.activeEvent.outcome}
+          onChooseOption={handleEventChoice}
+          onContinue={handleEventContinue}
+        />
+      </div>
+    );
+  }
+
+  // Handle fork phase - choose risk or safe path
+  if (state.phase === "fork" && state.forkDecision) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-4">
+        <Scorebar
+          players={state.players}
+          currentTurnIndex={state.turnIndex}
+          onResetGame={() => dispatch({ type: "RESET_GAME" })}
+        />
+        <Board board={state.board} players={state.players} />
+
+        <ForkChoiceModal
+          fromTile={state.forkDecision.fromTile}
+          options={state.forkDecision.options}
+          onChoosePath={(targetTile) => dispatch({ type: "CHOOSE_FORK_PATH", targetTile })}
+        />
       </div>
     );
   }
