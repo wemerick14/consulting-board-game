@@ -5,6 +5,7 @@ import { createBoard, getRankFromPosition } from "./board";
 import { generateCase } from "./case-gen";
 import { caseDatabase } from "../cases/caseDatabase";
 import { gradeNumeric, gradeMcq } from "./grading";
+import { getEventById } from "./events";
 
 const initialState: GameState = {
   players: [],
@@ -125,6 +126,54 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
       // Check for event tile
       if (currentTile.kind === "event" && currentTile.eventId) {
+        // Auto-resolve simple events immediately
+        const event = getEventById(currentTile.eventId);
+        if (event && event.type !== "choice" && event.effect) {
+          // Apply the effect immediately for non-choice events
+          const eventEffect = event.effect;
+          let updatedPlayers = state.players.map((p, idx) => {
+            if (idx !== state.turnIndex) return p;
+
+            let updates: any = {};
+
+            // Apply points change
+            if (eventEffect.pointsChange) {
+              updates.points = p.points + eventEffect.pointsChange;
+            }
+
+            // Apply position change
+            if (eventEffect.positionChange) {
+              const newPos = Math.max(0, Math.min(p.position + eventEffect.positionChange, state.board.length - 1));
+              updates.position = newPos;
+              updates.rank = getRankFromPosition(newPos);
+            }
+
+            // Apply credits change
+            if (eventEffect.creditsChange) {
+              updates.credits = { ...p.credits };
+              if (eventEffect.creditsChange.add60) {
+                updates.credits.add60 = Math.max(0, p.credits.add60 + eventEffect.creditsChange.add60);
+              }
+              if (eventEffect.creditsChange.fiveWordHint) {
+                updates.credits.fiveWordHint = Math.max(0, p.credits.fiveWordHint + eventEffect.creditsChange.fiveWordHint);
+              }
+              if (eventEffect.creditsChange.googlePeek) {
+                updates.credits.googlePeek = Math.max(0, p.credits.googlePeek + eventEffect.creditsChange.googlePeek);
+              }
+            }
+
+            return { ...p, ...updates };
+          });
+
+          return {
+            ...state,
+            players: updatedPlayers,
+            phase: "event",
+            activeEvent: { id: currentTile.eventId, outcome: eventEffect }
+          };
+        }
+
+        // For choice events, just show the modal without outcome
         return {
           ...state,
           phase: "event",

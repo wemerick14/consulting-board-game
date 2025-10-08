@@ -311,19 +311,8 @@ function App() {
     };
 
     const handleEventContinue = () => {
-      // If event has an outcome (resolved), go to transition phase
-      if (state.activeEvent?.outcome) {
-        dispatch({ type: "SHOW_RESULTS" });
-      } else {
-        // Simple event with direct effect - resolve it first
-        const event = getEventById(state.activeEvent?.id || "");
-        if (event?.effect) {
-          dispatch({ type: "RESOLVE_EVENT", outcome: event.effect });
-        } else {
-          // No effect, just continue
-          dispatch({ type: "SHOW_RESULTS" });
-        }
-      }
+      // Always go to SHOW_RESULTS to continue
+      dispatch({ type: "SHOW_RESULTS" });
     };
 
     return (
