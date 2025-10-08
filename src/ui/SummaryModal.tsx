@@ -21,13 +21,16 @@ export function SummaryModal({
   const seconds = sessionDuration % 60;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 bg-opacity-95 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto border-4 border-amber-500">
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4">🏆</div>
-          <h2 className="text-4xl font-bold text-gray-800 mb-2">Game Over!</h2>
-          <p className="text-xl text-gray-600">
-            <span className="font-bold text-blue-600">{winner.name}</span> wins!
+          <div className="text-7xl mb-4">🏆</div>
+          <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-900 to-blue-950 bg-clip-text text-transparent mb-3">
+            Partner Achieved!
+          </h2>
+          <div className="h-1 w-48 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 mx-auto rounded-full mb-4"></div>
+          <p className="text-2xl text-gray-700">
+            <span className="font-bold text-blue-950">{winner.name}</span> made Partner!
           </p>
         </div>
 
@@ -40,7 +43,7 @@ export function SummaryModal({
                 key={player.id}
                 className={`flex items-center justify-between p-4 rounded-lg ${
                   idx === 0
-                    ? 'bg-yellow-100 border-2 border-yellow-400'
+                    ? 'bg-gradient-to-r from-amber-100 to-amber-50 border-3 border-amber-500 shadow-lg'
                     : 'bg-gray-50 border border-gray-300'
                 }`}
               >
@@ -54,7 +57,7 @@ export function SummaryModal({
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-blue-600">{player.points} pts</div>
+                  <div className="text-2xl font-bold text-blue-950">{player.points} pts</div>
                   <div className="text-sm text-gray-600">
                     Streak: {player.streak} {Array.from({ length: Math.min(player.streak, 3) }, () => '⭐').join('')}
                   </div>
@@ -94,9 +97,9 @@ export function SummaryModal({
         {/* Actions */}
         <button
           onClick={onRematch}
-          className="w-full py-4 bg-blue-600 text-white text-xl font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+          className="w-full py-5 bg-gradient-to-r from-blue-900 to-blue-950 hover:from-blue-800 hover:to-blue-900 text-white text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-amber-500"
         >
-          Play Again
+          Start New Career Journey
         </button>
       </div>
     </div>

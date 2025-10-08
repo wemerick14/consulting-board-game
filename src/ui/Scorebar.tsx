@@ -15,8 +15,8 @@ export function Scorebar({ players, currentTurnIndex, onResetGame }: ScorebarPro
       {/* Reset Confirmation Modal */}
       {showResetConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">
+          <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full border-2 border-amber-500">
+            <h3 className="text-xl font-bold text-blue-950 mb-3">
               Reset Game?
             </h3>
             <p className="text-gray-600 mb-6">
@@ -34,7 +34,7 @@ export function Scorebar({ players, currentTurnIndex, onResetGame }: ScorebarPro
                   setShowResetConfirm(false);
                   onResetGame?.();
                 }}
-                className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-900 to-blue-950 hover:from-blue-800 hover:to-blue-900 text-white font-semibold rounded-lg transition-colors border border-amber-500"
               >
                 Reset Game
               </button>
@@ -48,7 +48,7 @@ export function Scorebar({ players, currentTurnIndex, onResetGame }: ScorebarPro
         <div className="flex justify-end mb-3">
           <button
             onClick={() => setShowResetConfirm(true)}
-            className="px-4 py-2 text-sm bg-red-100 hover:bg-red-200 text-red-700 border border-red-300 rounded-lg transition-colors font-medium"
+            className="px-4 py-2 text-sm bg-gradient-to-r from-blue-900 to-blue-950 hover:from-blue-800 hover:to-blue-900 text-white border border-amber-500 rounded-lg transition-colors font-medium"
           >
             🔄 Reset Game
           </button>
@@ -61,7 +61,7 @@ export function Scorebar({ players, currentTurnIndex, onResetGame }: ScorebarPro
             key={player.id}
             className={`border-2 rounded-lg p-4 ${
               idx === currentTurnIndex
-                ? 'border-blue-500 bg-blue-50 shadow-lg'
+                ? 'border-blue-950 bg-gradient-to-br from-blue-50 to-amber-50 shadow-lg ring-2 ring-amber-500'
                 : 'border-gray-300 bg-white'
             }`}
           >
@@ -99,8 +99,9 @@ export function Scorebar({ players, currentTurnIndex, onResetGame }: ScorebarPro
             </div>
 
             {idx === currentTurnIndex && (
-              <div className="mt-3 text-center text-sm font-semibold text-blue-600">
-                Current Turn
+              <div className="mt-3 text-center">
+                <div className="text-sm font-bold text-blue-950">Current Turn</div>
+                <div className="h-0.5 w-16 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto mt-1 rounded-full"></div>
               </div>
             )}
           </div>

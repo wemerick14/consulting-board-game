@@ -47,9 +47,9 @@ export function EventModal({ eventId, outcome, onChooseOption, onContinue }: Eve
 
         {/* Simple Event or Resolved Outcome - Show Result */}
         {!isChoiceEvent && (
-          <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-6 mb-6">
-            <h3 className="text-xl font-bold text-center text-gray-800 mb-4">
-              {event.type === "positive" ? "✨ Good News!" : event.type === "negative" ? "⚠️ Challenge!" : "🎲 Outcome"}
+          <div className="bg-gradient-to-r from-blue-50 to-amber-50 rounded-xl p-6 mb-6 border-2 border-amber-500">
+            <h3 className="text-xl font-bold text-center text-blue-950 mb-4">
+              {event.type === "positive" ? "✨ Career Win!" : event.type === "negative" ? "⚠️ Setback!" : "🎲 Outcome"}
             </h3>
 
             {outcome && (

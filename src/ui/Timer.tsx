@@ -24,8 +24,8 @@ export function Timer({ timeRemaining, totalTime }: TimerProps) {
             isVeryLowTime
               ? 'bg-red-500'
               : isLowTime
-              ? 'bg-orange-400'
-              : 'bg-blue-500'
+              ? 'bg-amber-500'
+              : 'bg-gradient-to-r from-blue-900 to-blue-950'
           }`}
           style={{ width: `${percentage}%` }}
         />

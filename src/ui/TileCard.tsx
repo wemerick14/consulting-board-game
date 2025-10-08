@@ -62,7 +62,7 @@ export function TileCard({
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               disabled={isTimeUp}
-              className="w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 disabled:bg-gray-100"
+              className="w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-900 focus:ring-2 focus:ring-amber-500 disabled:bg-gray-100"
               placeholder="Enter your answer..."
               autoFocus
             />
@@ -80,8 +80,8 @@ export function TileCard({
                   disabled={isTimeUp}
                   className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-colors
                     ${selectedMcq === idx
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-300 bg-white hover:border-blue-300'
+                      ? 'border-blue-950 bg-gradient-to-r from-blue-50 to-amber-50 ring-2 ring-amber-500'
+                      : 'border-gray-300 bg-white hover:border-blue-900'
                     }
                     disabled:bg-gray-100 disabled:cursor-not-allowed
                   `}
@@ -100,21 +100,21 @@ export function TileCard({
         <button
           onClick={onUseAdd60}
           disabled={creditsAvailable.add60 === 0 || isTimeUp}
-          className="px-3 py-2 text-sm bg-green-100 border border-green-300 rounded-lg hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-3 py-2 text-sm bg-amber-100 border-2 border-amber-500 rounded-lg hover:bg-amber-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-amber-900"
         >
           ⏰ +60s ({creditsAvailable.add60})
         </button>
         <button
           onClick={onUseGooglePeek}
           disabled={creditsAvailable.googlePeek === 0 || isTimeUp}
-          className="px-3 py-2 text-sm bg-purple-100 border border-purple-300 rounded-lg hover:bg-purple-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-3 py-2 text-sm bg-blue-100 border-2 border-blue-900 rounded-lg hover:bg-blue-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-blue-950"
         >
           🔍 Google Peek ({creditsAvailable.googlePeek})
         </button>
         <button
           onClick={onUseHint}
           disabled={creditsAvailable.fiveWordHint === 0 || isTimeUp}
-          className="px-3 py-2 text-sm bg-yellow-100 border border-yellow-300 rounded-lg hover:bg-yellow-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-3 py-2 text-sm bg-amber-100 border-2 border-amber-500 rounded-lg hover:bg-amber-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-amber-900"
         >
           💡 Hint ({creditsAvailable.fiveWordHint})
         </button>
@@ -124,7 +124,7 @@ export function TileCard({
       <button
         onClick={handleSubmit}
         disabled={!canSubmit || isTimeUp}
-        className="w-full py-4 text-lg font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+        className="w-full py-4 text-lg font-bold bg-gradient-to-r from-blue-900 to-blue-950 hover:from-blue-800 hover:to-blue-900 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-amber-500 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:border-gray-400 disabled:transform-none"
       >
         {isTimeUp ? "Time's Up!" : "Submit Answer"}
       </button>
