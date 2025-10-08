@@ -173,13 +173,13 @@ export function ResultsScreen({
         {/* Continue Button */}
         <button
           onClick={onContinue}
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          className="w-full bg-gradient-to-r from-blue-900 to-blue-950 hover:from-blue-800 hover:to-blue-900 text-white font-bold py-5 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-amber-500"
         >
-          Pass to Next Player →
+          Continue to Next Presentation →
         </button>
 
-        <div className="mt-4 text-center text-sm text-gray-500">
-          Take a moment to review the standings before continuing!
+        <div className="mt-4 text-center text-sm text-gray-500 italic">
+          Review the partner track standings before proceeding
         </div>
       </div>
     </div>

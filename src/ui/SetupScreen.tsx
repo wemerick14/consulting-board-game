@@ -50,14 +50,21 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-2xl p-8 max-w-2xl w-full">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full border-4 border-amber-500">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            Consulting Career Board Game
-          </h1>
-          <p className="text-gray-600">
-            Race from Analyst to Retirement by solving case interviews!
+          {/* Brand Logo/Title */}
+          <div className="mb-6">
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-900 to-blue-950 bg-clip-text text-transparent mb-3">
+              THE PARTNER TRACK
+            </h1>
+            <div className="h-1 w-48 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 mx-auto rounded-full mb-4"></div>
+          </div>
+          <p className="text-gray-700 text-lg font-medium">
+            Race from Analyst to Partner by mastering case interviews
+          </p>
+          <p className="text-gray-500 text-sm mt-1">
+            A premium consulting career simulation
           </p>
         </div>
 
@@ -73,7 +80,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
                 onClick={() => handleNumPlayersChange(num)}
                 className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
                   numPlayers === num
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-gradient-to-r from-blue-900 to-blue-950 text-white border-2 border-amber-500'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -114,7 +121,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
                 onClick={() => setTimerSecs(secs as 60 | 75 | 90)}
                 className={`flex-1 py-2 rounded-lg font-semibold transition-colors ${
                   timerSecs === secs
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-gradient-to-r from-blue-900 to-blue-950 text-white border-2 border-amber-500'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -134,7 +141,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
               onClick={() => setSession("short")}
               className={`flex-1 py-2 rounded-lg font-semibold transition-colors ${
                 session === "short"
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-gradient-to-r from-blue-900 to-blue-950 text-white border-2 border-amber-500'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -144,7 +151,7 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
               onClick={() => setSession("standard")}
               className={`flex-1 py-2 rounded-lg font-semibold transition-colors ${
                 session === "standard"
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-gradient-to-r from-blue-900 to-blue-950 text-white border-2 border-amber-500'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -156,20 +163,20 @@ export function SetupScreen({ onStart }: SetupScreenProps) {
         {/* Start button */}
         <button
           onClick={handleStart}
-          className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xl font-bold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors shadow-lg"
+          className="w-full py-5 bg-gradient-to-r from-blue-900 to-blue-950 hover:from-blue-800 hover:to-blue-900 text-white text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-amber-500"
         >
-          Start Game
+          Begin Your Journey to Partner
         </button>
 
         {/* Game info */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <h3 className="font-semibold text-gray-800 mb-2">How to Play:</h3>
-          <ul className="text-sm text-gray-700 space-y-1">
-            <li>• Answer case interview questions to move forward</li>
-            <li>• Earn points based on accuracy (closer = more points)</li>
-            <li>• Build a streak for bonus movement</li>
-            <li>• Use credits wisely (each costs 1 point)</li>
-            <li>• First to Retirement wins!</li>
+        <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-amber-50 rounded-xl border-2 border-amber-200">
+          <h3 className="font-bold text-blue-950 mb-3 text-lg">How to Play:</h3>
+          <ul className="text-sm text-gray-700 space-y-2">
+            <li>• <strong>Master case interviews</strong> to advance your consulting career</li>
+            <li>• <strong>Earn points</strong> based on analytical accuracy and speed</li>
+            <li>• <strong>Build momentum</strong> with answer streaks for accelerated growth</li>
+            <li>• <strong>Use power-ups strategically</strong> - each credit costs 1 point</li>
+            <li>• <strong>First to Partner</strong> (retirement) wins the game!</li>
           </ul>
         </div>
       </div>

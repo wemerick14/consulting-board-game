@@ -60,9 +60,9 @@ export function ChoiceScreen({ playerName, onChooseDifficulty }: Props) {
           </button>
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+        <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-amber-50 rounded-xl border-2 border-amber-200">
           <p className="text-sm text-gray-700 text-center">
-            💡 <strong>Tip:</strong> Quick Math is great for fast points, but Full Cases earn more rewards!
+            💡 <strong>Strategic Insight:</strong> Quick Math builds momentum, but Full Cases accelerate your partner track!
           </p>
         </div>
       </div>
