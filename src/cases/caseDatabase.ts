@@ -392,7 +392,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "market_entry",
     difficulty: "full",
     title: "Food Truck Break-Even Analysis",
-    stem_template: "A food truck costs ${startup}k to start. Daily revenue ${dailyRev}, daily costs ${dailyCost}. Operates {daysPerMonth} days/month. How many months to break even?",
+    stem_template: "Your client, TacoTrek, is considering launching a food truck business. The CEO wants to understand the payback period before committing capital. Startup costs: ${startup}k. Projected daily revenue: ${dailyRev}, daily operating costs: ${dailyCost}. Operating {daysPerMonth} days/month. How many months until break-even?",
     inputs: ["startup", "dailyRev", "dailyCost", "daysPerMonth"],
     params: {
       startup: { min: 50, max: 150, step: 25 },
@@ -412,7 +412,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "SaaS Customer Lifetime Value",
-    stem_template: "SaaS product: ${monthly} per month subscription. Avg customer stays {months} months. Cost to serve: ${serveCost} per month. What's customer lifetime value?",
+    stem_template: "CloudFlow, a B2B software company, has asked you to calculate customer lifetime value (LTV) to inform their customer acquisition strategy. Monthly subscription: ${monthly}. Average customer tenure: {months} months. Cost to serve each customer: ${serveCost}/month. What's the LTV per customer?",
     inputs: ["monthly", "months", "serveCost"],
     params: {
       monthly: { min: 50, max: 200, step: 25 },
@@ -431,7 +431,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "market_sizing",
     difficulty: "full",
     title: "Retail Market Opportunity",
-    stem_template: "City has {population}k people. {targetPct}% are target customers. {purchasePct}% buy annually. Avg purchase ${avgPurchase}. What's total addressable market in millions?",
+    stem_template: "StyleCo, an apparel retailer, is evaluating a new city for expansion. The CFO needs a quick total addressable market (TAM) estimate. City population: {population}k. Target demographic: {targetPct}% of population. Annual purchase rate among targets: {purchasePct}%. Average purchase value: ${avgPurchase}. What's the TAM in millions?",
     inputs: ["population", "targetPct", "purchasePct", "avgPurchase"],
     params: {
       population: { min: 200, max: 1000, step: 200 },
@@ -451,7 +451,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "Subscription Revenue Projection",
-    stem_template: "Start with {startingSubs} subscribers at ${monthly}/month. Growing {newSubs} new subs/month but {churnPct}% cancel monthly. What's month 12 revenue?",
+    stem_template: "StreamFit's CFO needs a revenue projection for their upcoming board meeting. Current base: {startingSubs} subscribers at ${monthly}/month. New customer growth: {newSubs} subscribers/month. Monthly churn rate: {churnPct}%. What will month 12 monthly revenue be?",
     inputs: ["startingSubs", "monthly", "newSubs", "churnPct"],
     params: {
       startingSubs: { min: 1000, max: 5000, step: 1000 },
@@ -471,7 +471,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "pricing",
     difficulty: "full",
     title: "Price Point Comparison",
-    stem_template: "Option A: ${priceA} price, {volumeA} units, ${costA} variable cost. Option B: ${priceB} price, {volumeB} units, ${costB} variable cost. Which generates higher total profit?",
+    stem_template: "TechiePro leadership is testing two pricing strategies for their new product. Option A: Price at ${priceA}, projected volume {volumeA} units, variable cost ${costA}/unit. Option B: Price at ${priceB}, volume {volumeB} units, cost ${costB}/unit. Which option maximizes total contribution margin?",
     inputs: ["priceA", "volumeA", "costA", "priceB", "volumeB", "costB"],
     params: {
       priceA: { min: 30, max: 60, step: 10 },
@@ -493,7 +493,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "ops",
     difficulty: "full",
     title: "Warehouse Automation ROI",
-    stem_template: "Automation costs ${upfront}k. Saves ${savings}k per year in labor. Maintenance ${maintenance}k per year. {years} year life. What's total net benefit?",
+    stem_template: "LogiCo is evaluating warehouse automation to improve margins. The COO wants to see the business case. Upfront investment: ${upfront}k. Annual labor savings: ${savings}k. Annual maintenance costs: ${maintenance}k. Useful life: {years} years. What's the total net benefit over the investment period?",
     inputs: ["upfront", "savings", "maintenance", "years"],
     params: {
       upfront: { min: 200, max: 600, step: 100 },
@@ -513,7 +513,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "Marketing Channel Returns",
-    stem_template: "Channel A: ${costA}k spend, {customersA} customers, ${ltvA} lifetime value each. Channel B: ${costB}k spend, {customersB} customers, ${ltvB} LTV. Which has better ROI?",
+    stem_template: "GrowthLabs is comparing two customer acquisition channels to allocate next quarter's budget. Channel A: ${costA}k spend, acquired {customersA} customers, LTV ${ltvA} each. Channel B: ${costB}k spend, acquired {customersB} customers, LTV ${ltvB} each. Which channel delivers better ROI percentage?",
     inputs: ["costA", "customersA", "ltvA", "costB", "customersB", "ltvB"],
     params: {
       costA: { min: 20, max: 80, step: 20 },
@@ -535,7 +535,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "Product Portfolio Profit",
-    stem_template: "Product A: {unitsA} units at ${marginA} margin each. Product B: {unitsB} units at ${marginB} margin. Fixed costs ${fixed}k. What's total profit in thousands?",
+    stem_template: "SnackCo needs a profitability analysis across their two-product portfolio for the CFO's quarterly review. Product A: {unitsA} units sold at ${marginA} contribution margin per unit. Product B: {unitsB} units at ${marginB} margin per unit. Shared fixed costs: ${fixed}k. What's total profit in thousands?",
     inputs: ["unitsA", "marginA", "unitsB", "marginB", "fixed"],
     params: {
       unitsA: { min: 500, max: 2000, step: 500 },
@@ -556,7 +556,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "market_sizing",
     difficulty: "full",
     title: "Cohort Retention Revenue",
-    stem_template: "Acquired {customers} customers in Jan at ${monthly}/month. Month 1-6: {retentionEarly}% retained. Month 7-12: {retentionLate}% retained. What's total year 1 revenue?",
+    stem_template: "AppCo's product team is tracking the January customer cohort to understand retention economics. Cohort size: {customers} customers at ${monthly}/month subscription. First 6 months: {retentionEarly}% retention rate. Months 7-12: {retentionLate}% retention. What's the total Year 1 revenue from this cohort?",
     inputs: ["customers", "monthly", "retentionEarly", "retentionLate"],
     params: {
       customers: { min: 100, max: 500, step: 100 },
@@ -576,7 +576,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "ops",
     difficulty: "full",
     title: "Manufacturing Capacity Decision",
-    stem_template: "Current: {currentCap} units/month capacity at {utilizationPct}% utilization. Demand growing {growthPct}%/month. At what month will you hit 100% capacity?",
+    stem_template: "ManufactureCo is planning capacity expansion but wants to time it right. The VP Operations needs to know when they'll hit constraints. Current capacity: {currentCap} units/month at {utilizationPct}% utilization. Demand growth: {growthPct}% per month. In what month will you reach 100% capacity utilization?",
     inputs: ["currentCap", "utilizationPct", "growthPct"],
     params: {
       currentCap: { min: 5000, max: 20000, step: 5000 },
@@ -595,7 +595,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "pricing",
     difficulty: "full",
     title: "Volume Discount Impact",
-    stem_template: "Base: ${basePrice} price, {baseVolume} volume. Offer {discountPct}% discount, volume increases by {volumeBoost}%. Cost per unit ${cost}. Profit change?",
+    stem_template: "RetailCo's VP of Sales is proposing a promotional discount to drive volume growth. Current pricing: ${basePrice} per unit at {baseVolume} units sold. Proposed discount: {discountPct}%, expected to boost volume by {volumeBoost}%. Variable cost per unit: ${cost}. The CFO wants to know the profit impact. What's the change in profit?",
     inputs: ["basePrice", "baseVolume", "discountPct", "volumeBoost", "cost"],
     params: {
       basePrice: { min: 50, max: 150, step: 25 },
@@ -616,7 +616,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "ops",
     difficulty: "full",
     title: "Headcount ROI Analysis",
-    stem_template: "Team of {currentTeam} generates ${currentRevenue}k/month. Hire {newHires} people at ${salary}k annual each. Revenue increases {revBoost}%. Net annual impact?",
+    stem_template: "TalentCo's CEO is evaluating a team expansion proposal. Current team: {currentTeam} people generating ${currentRevenue}k/month in revenue. Plan: hire {newHires} new employees at ${salary}k annual salary each. Projected revenue boost: {revBoost}%. What's the net annual financial impact?",
     inputs: ["currentTeam", "currentRevenue", "newHires", "salary", "revBoost"],
     params: {
       currentTeam: { min: 10, max: 50, step: 10 },
@@ -637,7 +637,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "market_sizing",
     difficulty: "full",
     title: "Market Penetration Growth",
-    stem_template: "TAM is ${tam}M. Year 1: {year1Pct}% penetration. Year 2: {year2Pct}% penetration. Avg revenue per customer ${arpc}. What's Year 2 revenue in millions?",
+    stem_template: "MarketLeader's board wants a growth projection to set investor expectations. Total addressable market (TAM): ${tam}M. Year 1 market penetration: {year1Pct}%. Year 2 target penetration: {year2Pct}%. Average revenue per customer: ${arpc}. What will Year 2 revenue be in millions?",
     inputs: ["tam", "year1Pct", "year2Pct", "arpc"],
     params: {
       tam: { min: 100, max: 500, step: 100 },
@@ -657,7 +657,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "market_entry",
     difficulty: "full",
     title: "New Store Cannibalization",
-    stem_template: "Existing store: ${existingRev}k/month. New store: ${newRev}k/month. {cannibalPct}% of new store revenue comes from existing customers. Net monthly revenue increase?",
+    stem_template: "ShopCo is considering opening a second location but worries about cannibalization. Existing store revenue: ${existingRev}k/month. Projected new store revenue: ${newRev}k/month. However, market research shows {cannibalPct}% of new store sales would come from existing customers. What's the true net monthly revenue increase?",
     inputs: ["existingRev", "newRev", "cannibalPct"],
     params: {
       existingRev: { min: 100, max: 300, step: 50 },
@@ -676,7 +676,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "Freemium Model Economics",
-    stem_template: "{freeUsers} free users. {conversionPct}% convert to ${paid}/month paid tier. Cost to serve free users ${freeCost} each/month. Monthly net revenue?",
+    stem_template: "FreemiumApp's CFO needs to justify the freemium model to the board. Current user base: {freeUsers} free users. Conversion rate to paid tier: {conversionPct}% at ${paid}/month subscription. Cost to serve each free user: ${freeCost}/month. What's the monthly net revenue from this model?",
     inputs: ["freeUsers", "conversionPct", "paid", "freeCost"],
     params: {
       freeUsers: { min: 5000, max: 20000, step: 5000 },
@@ -696,7 +696,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "ops",
     difficulty: "full",
     title: "Supplier Negotiation Impact",
-    stem_template: "Annual purchases: ${annualSpend}M. Negotiate {savingsPct}% discount. Implementation cost ${impCost}k. Net first year benefit in thousands?",
+    stem_template: "SupplyCo's procurement team has negotiated new supplier terms and needs to quantify the value. Annual purchases: ${annualSpend}M. Negotiated discount: {savingsPct}%. Implementation cost: ${impCost}k. What's the net first-year benefit in thousands?",
     inputs: ["annualSpend", "savingsPct", "impCost"],
     params: {
       annualSpend: { min: 5, max: 20, step: 5 },
@@ -715,7 +715,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "A/B Test Revenue Impact",
-    stem_template: "Version A: {visitorsA} visitors, {conversionA}% conversion, ${aovA} avg order. Version B: {visitorsB} visitors, {conversionB}% conversion, ${aovB} avg order. Which generates more revenue?",
+    stem_template: "EcommerceCo's product team ran an A/B test on their checkout page and needs to decide which version to launch. Version A: {visitorsA} visitors, {conversionA}% conversion rate, ${aovA} average order value. Version B: {visitorsB} visitors, {conversionB}% conversion, ${aovB} average order value. Which version generates more revenue?",
     inputs: ["visitorsA", "conversionA", "aovA", "visitorsB", "conversionB", "aovB"],
     params: {
       visitorsA: { min: 1000, max: 5000, step: 1000 },
@@ -737,7 +737,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "Referral Program Economics",
-    stem_template: "{customers} customers, {referralRate}% refer someone, {conversionPct}% of referrals convert. Pay ${reward} per referral. Customer LTV ${ltv}. Net value?",
+    stem_template: "ViralCo's marketing team is pitching a referral program to the CFO. Customer base: {customers} customers. Expected referral rate: {referralRate}%. Conversion rate for referrals: {conversionPct}%. Referral reward cost: ${reward} per referral. Customer LTV: ${ltv}. What's the net value of this program?",
     inputs: ["customers", "referralRate", "conversionPct", "reward", "ltv"],
     params: {
       customers: { min: 1000, max: 5000, step: 1000 },
@@ -758,7 +758,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "ops",
     difficulty: "full",
     title: "Inventory Holding Costs",
-    stem_template: "Average inventory ${inventory}k. Holding cost {holdingPct}% per year. Reduce inventory by {reductionPct}%. Annual savings?",
+    stem_template: "WarehouseCo's COO wants to optimize working capital by reducing inventory. Current average inventory: ${inventory}k. Holding cost: {holdingPct}% per year. Target inventory reduction: {reductionPct}%. What are the annual savings?",
     inputs: ["inventory", "holdingPct", "reductionPct"],
     params: {
       inventory: { min: 100, max: 500, step: 100 },
@@ -777,7 +777,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "Upsell Revenue Potential",
-    stem_template: "{customers} customers pay ${base}/month. Offer ${premium}/month premium tier. {upsellPct}% upgrade. What's monthly revenue increase?",
+    stem_template: "UpgradeCo's product team is launching a premium tier to drive revenue growth. Current customer base: {customers} customers at ${base}/month. New premium tier: ${premium}/month. Expected upgrade rate: {upsellPct}%. What's the monthly revenue increase?",
     inputs: ["customers", "base", "premium", "upsellPct"],
     params: {
       customers: { min: 1000, max: 5000, step: 1000 },
@@ -799,7 +799,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "market_entry",
     difficulty: "full",
     title: "Market Entry Strategy",
-    stem_template: "A food delivery startup wants to enter a new city. Market size ${marketSize}M, {competitors} established competitors with {competitorShare}% combined market share. High customer acquisition costs. What's the best strategy?",
+    stem_template: "QuickBite, a food delivery startup, has hired you to advise on entering a new city. The CEO wants a clear recommendation. Market size: ${marketSize}M. Competition: {competitors} established players holding {competitorShare}% combined market share. Customer acquisition costs are high due to saturated digital channels. What's the best market entry strategy?",
     inputs: ["marketSize", "competitors", "competitorShare"],
     params: {
       marketSize: { min: 10, max: 50, step: 10 },
@@ -827,7 +827,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "pricing",
     difficulty: "full",
     title: "Pricing Strategy Choice",
-    stem_template: "A premium coffee brand currently sells at ${currentPrice}. Market research shows customers associate quality with price. {competitorsPct}% of competitors price below ${compPrice}. Sales are growing {growthPct}% annually. Should you adjust pricing?",
+    stem_template: "ArtisanBrew, a premium coffee brand, has engaged you for pricing advice. Current price: ${currentPrice}. Recent market research confirms customers strongly associate quality with price in this category. Competitive landscape: {competitorsPct}% of competitors price below ${compPrice}. Sales growing at {growthPct}% annually. Should you adjust pricing?",
     inputs: ["currentPrice", "compPrice", "competitorsPct", "growthPct"],
     params: {
       currentPrice: { min: 15, max: 25, step: 5 },
@@ -856,7 +856,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "Profit Improvement Priority",
-    stem_template: "A retail chain's profit margin dropped from {oldMargin}% to {newMargin}%. Analysis shows: (1) Revenue down {revDown}% due to traffic decline, (2) Costs up {costUp}% from supplier price increases, (3) Avg transaction down {ticketDown}%. What should be the top priority?",
+    stem_template: "ValueMart, a retail chain, has called you in for a profitability turnaround. The CFO shows you: profit margin dropped from {oldMargin}% to {newMargin}%. Your analysis reveals: (1) Revenue down {revDown}% due to traffic decline, (2) Costs up {costUp}% from supplier price increases, (3) Average transaction value down {ticketDown}%. What should be the top priority?",
     inputs: ["oldMargin", "newMargin", "revDown", "costUp", "ticketDown"],
     params: {
       oldMargin: { min: 8, max: 15, step: 2 },
@@ -886,7 +886,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "market_sizing",
     difficulty: "full",
     title: "Target Segment Selection",
-    stem_template: "SaaS product has 3 segments: SMB ({smbSize}k companies, ${smbPrice}/mo willingness to pay), Mid-market ({midSize}k companies, ${midPrice}/mo), Enterprise ({entSize}k companies, ${entPrice}/mo). Limited sales resources. Which to prioritize?",
+    stem_template: "SalesForce360, a SaaS product startup, needs go-to-market guidance. Three potential segments: SMB ({smbSize}k companies, ${smbPrice}/month willingness to pay), Mid-market ({midSize}k companies, ${midPrice}/month), Enterprise ({entSize}k companies, ${entPrice}/month). Sales team is lean with limited resources. Which segment should you prioritize?",
     inputs: ["smbSize", "smbPrice", "midSize", "midPrice", "entSize", "entPrice"],
     params: {
       smbSize: { min: 500, max: 2000, step: 500 },
@@ -917,7 +917,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "ops",
     difficulty: "full",
     title: "Capacity Bottleneck Solution",
-    stem_template: "Manufacturing plant at {utilizationPct}% capacity. Demand growing {demandGrowth}%/quarter. Lead time to add capacity: {leadTime} months. Cost to add capacity: ${capexCost}M. Lost sales cost ${lostSaleCost}k per month. What should you do?",
+    stem_template: "IndustrialCo's VP of Operations faces a capacity crunch. Current plant running at {utilizationPct}% capacity utilization. Demand growing {demandGrowth}%/quarter. Lead time to add new capacity: {leadTime} months. Investment required: ${capexCost}M. Lost sales from stockouts: ${lostSaleCost}k per month. What should you recommend?",
     inputs: ["utilizationPct", "demandGrowth", "leadTime", "capexCost", "lostSaleCost"],
     params: {
       utilizationPct: { min: 85, max: 95, step: 5 },
@@ -947,7 +947,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "market_entry",
     difficulty: "full",
     title: "New Product Launch Strategy",
-    stem_template: "Launching new product. Development cost ${devCost}k (sunk). Marketing budget ${marketingBudget}k. Early testing shows {npsScore} NPS score, {churnRate}% monthly churn. Competitor launching similar product in {competitorMonths} months. What's the best move?",
+    stem_template: "InnovateTech is ready to launch a new product and the CEO needs your strategic recommendation. Development cost: ${devCost}k (already sunk). Marketing budget: ${marketingBudget}k. Early testing results: {npsScore} NPS score, {churnRate}% monthly churn rate. Intelligence shows a competitor launching similar product in {competitorMonths} months. What's the best move?",
     inputs: ["devCost", "marketingBudget", "npsScore", "churnRate", "competitorMonths"],
     params: {
       devCost: { min: 100, max: 500, step: 100 },
@@ -977,7 +977,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "Sales Team Allocation",
-    stem_template: "Sales team of {salesReps} reps. Product A: ${productAValue}k avg deal, {productAWinRate}% win rate, {productACycle} month cycle. Product B: ${productBValue}k deal, {productBWinRate}% win rate, {productBCycle} month cycle. How to allocate the team?",
+    stem_template: "DualProduct Inc's VP of Sales needs to optimize team allocation. Current team: {salesReps} sales reps. Product A metrics: ${productAValue}k average deal size, {productAWinRate}% win rate, {productACycle}-month sales cycle. Product B metrics: ${productBValue}k deal size, {productBWinRate}% win rate, {productBCycle}-month cycle. How should you allocate the sales team?",
     inputs: ["salesReps", "productAValue", "productAWinRate", "productACycle", "productBValue", "productBWinRate", "productBCycle"],
     params: {
       salesReps: { min: 10, max: 30, step: 10 },
@@ -1009,7 +1009,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "profitability",
     difficulty: "full",
     title: "Customer Retention Investment",
-    stem_template: "{customers} customers at ${mrr}/mo MRR. {churnPct}% monthly churn. Can invest ${budget}k in: (A) Customer success team (reduce churn to {optionAChurn}%), (B) Product improvements (reduce to {optionBChurn}%), (C) Loyalty program (reduce to {optionCChurn}%). Which has best 12-month ROI?",
+    stem_template: "SubscribeCo's CFO is concerned about churn and wants to invest in retention. Current base: {customers} customers at ${mrr}/month. Churn rate: {churnPct}% monthly. Budget: ${budget}k to invest. Three options: (A) Customer success team (reduce churn to {optionAChurn}%), (B) Product improvements (reduce to {optionBChurn}%), (C) Loyalty program (reduce to {optionCChurn}%). Which has the best 12-month ROI?",
     inputs: ["customers", "mrr", "churnPct", "budget", "optionAChurn", "optionBChurn", "optionCChurn"],
     params: {
       customers: { min: 500, max: 2000, step: 500 },
@@ -1041,7 +1041,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "pricing",
     difficulty: "full",
     title: "Competitor Price Cut Response",
-    stem_template: "Market leader with {marketShare}% share at ${yourPrice} price. Competitor #2 ({compShare}% share) cuts price from ${compOldPrice} to ${compNewPrice}. You have {brandLoyalty}% loyal customers, {costAdvantage}% cost advantage. How to respond?",
+    stem_template: "BrandLeader is facing an aggressive competitive move. You're the market leader with {marketShare}% share at ${yourPrice} price point. Competitor #2 ({compShare}% share) just slashed price from ${compOldPrice} to ${compNewPrice}. Your advantages: {brandLoyalty}% loyal customer base and {costAdvantage}% cost advantage. The CEO needs an immediate recommendation. How should you respond?",
     inputs: ["marketShare", "yourPrice", "compShare", "compOldPrice", "compNewPrice", "brandLoyalty", "costAdvantage"],
     params: {
       marketShare: { min: 30, max: 50, step: 10 },
@@ -1073,7 +1073,7 @@ export const caseDatabase: CaseTemplate[] = [
     category: "market_entry",
     difficulty: "full",
     title: "Growth Investment Priority",
-    stem_template: "Have ${budget}M to invest. Options: (A) New geographic market (${geoTAM}M TAM, {geoRisk}% risk), (B) New customer segment (${segmentTAM}M TAM, {segmentRisk}% risk), (C) New product line (${productTAM}M TAM, {productRisk}% risk). Core business growing {coreGrowth}%/year. What to prioritize?",
+    stem_template: "GrowthCorp's board has allocated ${budget}M for expansion and needs your recommendation on where to invest. Three options: (A) New geographic market (${geoTAM}M TAM, {geoRisk}% execution risk), (B) New customer segment (${segmentTAM}M TAM, {segmentRisk}% risk), (C) New product line (${productTAM}M TAM, {productRisk}% risk). Core business currently growing {coreGrowth}%/year. What should you prioritize?",
     inputs: ["budget", "geoTAM", "geoRisk", "segmentTAM", "segmentRisk", "productTAM", "productRisk", "coreGrowth"],
     params: {
       budget: { min: 5, max: 20, step: 5 },
